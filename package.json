@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Living Styleguide Generator",
   "main": "index.js",
   "scripts": {
@@ -27,8 +27,7 @@
     "lodash": "^3.10.1",
     "marked": "^0.3.5",
     "nunjucks": "^2.2.0",
-    "vision": "^4.0.1",
-    "zool-sass": "^0.1.0"
+    "vision": "^4.0.1"
   },
   "devDependencies": {
     "code": "^1.5.0",
