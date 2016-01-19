@@ -1,0 +1,13 @@
+<h1>/{{tree.name}}</h1>
+
+<a href="{{tree.parent}}">Back</a>
+
+<ul>
+{{# each tree.items }}
+    <li><a href="{{uri}}">{{name}}</a></li>
+{{/each}}
+</ul>
+
+<script>
+    console.log({{{treeString}}});
+</script>

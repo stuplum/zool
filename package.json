@@ -1,0 +1,42 @@
+{
+  "name": "zool",
+  "version": "0.1.0",
+  "description": "Living Styleguide Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab -I 'describe,it,before,beforeEach,after,afterEach,expect,syncSpec,fromRoot' test/unit.lab.js"
+  },
+  "engines": {
+    "node": ">=4.2.2"
+  },
+  "keywords": [
+    "styleguide",
+    "style",
+    "guide"
+  ],
+  "author": "stuplum",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^1.16.0",
+    "directory-tree": "0.1.1",
+    "handlebars": "^4.0.2",
+    "hapi": "12.1.0",
+    "hapi-sass": "2.0.0",
+    "hoek": "^2.16.3",
+    "inert": "^3.2.0",
+    "lodash": "^3.10.1",
+    "marked": "^0.3.5",
+    "nunjucks": "^2.2.0",
+    "vision": "^4.0.1",
+    "zool-sass": "^0.1.0"
+  },
+  "devDependencies": {
+    "code": "^1.5.0",
+    "glob": "^5.0.15",
+    "lab": "^6.2.0",
+    "mout": ">=0.9.0 <1.0.0",
+    "mkdirp": "^0.5.0",
+    "node-uuid": "^1.4.3",
+    "rimraf": "^2.3.2"
+  }
+}

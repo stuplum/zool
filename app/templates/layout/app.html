@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="component-viewer">
+<head>
+    {% include "../includes/head.html" %}
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<div id="zool-l-layout">
+    <div id="zool-l-menu">
+        <div class="zool-menu">
+            <a href="/" class="zool-menu__heading">{{ application }}</a>
+            <ul class="zool-menu-list">
+                {% for item in modules %}
+                <li class="zool-menu-list__item zool-menu-list__item--divided">
+                    <a href="/{{ item.name }}" class="zool-menu__link">{{ item.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="zool-l-main">
+        {% block content %}
+        {% endblock %}
+        <div class="zool-footer">
+            {% include "../includes/footer.html" %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

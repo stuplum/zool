@@ -1,0 +1,7 @@
+.idea
+_compiled
+
+node_modules
+
+*.iml
+*.log

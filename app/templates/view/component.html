@@ -1,0 +1,15 @@
+{% extends 'layout/app.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="/css/{{ componentName }}.css" />
+{% endblock %}
+
+{% block content %}
+<div class="zool-header">
+    <h1>{{ componentName }}</h1>
+    <h2>{{ location }}</h2>
+</div>
+<div class="zool-content">
+    {{ example | safe }}
+</div>
+{% endblock %}

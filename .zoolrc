@@ -1,0 +1,13 @@
+{
+  "debug": true,
+
+  "componentPath": "example/components",
+  "componentTemplates": "markdown",
+
+  "styleParser": "sass",
+
+  "sass": {
+    "entryPoint": "style/_index",
+    "extension": "scss"
+  }
+}
