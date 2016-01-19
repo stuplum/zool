@@ -1,8 +1,11 @@
 {
   "name": "zool",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Living Styleguide Generator",
-  "main": "index.js",
+  "main": "app/index.js",
+  "bin": {
+    "zool": "bin.js"
+  },
   "scripts": {
     "test": "lab -I 'describe,it,before,beforeEach,after,afterEach,expect,syncSpec,fromRoot' test/unit.lab.js"
   },
@@ -21,7 +24,6 @@
     "directory-tree": "0.1.1",
     "handlebars": "^4.0.2",
     "hapi": "12.1.0",
-    "hapi-sass": "2.0.0",
     "hoek": "^2.16.3",
     "inert": "^3.2.0",
     "lodash": "^3.10.1",
