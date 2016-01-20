@@ -32,11 +32,12 @@ const handlers = {
 
         fs.readFile(`${componentPath}/README.md`, 'utf8', (err, markdown) => {
             reply.view('view/component', {
-                application: 'Pottermore',
+                brand: config.brand || 'ZOOL',
                 componentName: componentName,
                 location: componentPath,
                 example: marked(markdown),
-                modules: walkedTree.items
+                modules: walkedTree.items,
+                year: '2015'
             });
         });
     }

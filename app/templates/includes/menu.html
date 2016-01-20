@@ -1,0 +1,10 @@
+<div class="zool-menu">
+    <a href="/" class="zool-menu__heading">ZOOL</a>
+    <ul class="zool-menu-list">
+        {% for item in modules %}
+        <li class="zool-menu-list__item zool-menu-list__item--divided">
+            <a href="/{{ item.name }}" class="zool-menu__link">{{ item.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
