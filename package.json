@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -12,12 +12,20 @@
   "engines": {
     "node": ">=4.2.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/stuplum/zool"
+  },
   "keywords": [
     "styleguide",
     "style",
     "guide"
   ],
   "author": "stuplum",
+  "bugs": {
+    "url": "https://github.com/stuplum/zool/issues"
+  },
+  "homepage": "https://github.com/stuplum/zool",
   "license": "ISC",
   "dependencies": {
     "config": "^1.16.0",
