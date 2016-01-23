@@ -5,6 +5,7 @@ const join = require('path').join;
 const resolve = require('path').resolve;
 
 const ZoolSass = require('zool-sass');
+const ZoolWebpack = require('zool-webpack');
 const ZoolConfig = require('./lib/zool-config');
 const treeWalker = require('./lib/tree-walker');
 
@@ -63,6 +64,13 @@ internals.main = config => {
                 includePaths: [config.componentPath],
                 outputStyle: 'nested',
                 sourceComments: true
+            }
+        },
+        {
+            register: ZoolWebpack,
+            options: {
+                debug: config.debug,
+                src: config.componentPath
             }
         }
     ];

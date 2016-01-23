@@ -1,20 +1,21 @@
 'use strict';
 
-const TempDir = require(fromRoot('test/support/temp-dir'));
+const TempDir = require('zool-test-support').TempDir;
 
 const rc = require(fromRoot('app/lib/zool-config/util/rc'));
 
 describe('rc', function() {
 
-    var tempDir = new TempDir();
+    var tempDir = new TempDir('zool-config-tests');
 
     tempDir.prepare({
-        '.daverc': {
-            key: 'dave'
-        },
-        '.chazrc/foo': {
-            key: 'chaz'
-        }
+        '.daverc': { key: 'dave' },
+        '.chazrc/foo': { key: 'chaz' }
+    });
+
+    after(function (done) {
+        tempDir.clean();
+        done();
     });
 
     it('correctly reads .xxxrc files', syncSpec(() => {
