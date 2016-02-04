@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const join = require('path').join;
+const extname = require('path').extname;
 const resolve = require('path').resolve;
 
 const ZoolSass = require('zool-sass');
@@ -19,30 +20,6 @@ const Nunjucks = require('nunjucks');
 const handlebars = require('handlebars');
 
 const internals = {};
-
-const handlers = {
-
-    markdown: config => (request, reply) => {
-
-        const modulePath = resolve(process.cwd(), config.componentPath);
-
-        const componentName = request.params.location;
-        const componentPath = `${modulePath}/${componentName}`;
-
-        const walkedTree = treeWalker(modulePath).walk();
-
-        fs.readFile(`${componentPath}/README.md`, 'utf8', (err, markdown) => {
-            reply.view('view/component', {
-                brand: config.brand || 'ZOOL',
-                componentName: componentName,
-                location: componentPath,
-                example: marked(markdown),
-                modules: walkedTree.items,
-                year: '2015'
-            });
-        });
-    }
-};
 
 internals.main = config => {
 
@@ -118,7 +95,31 @@ internals.main = config => {
             }
         });
 
-        server.route({ method: 'GET', path: '/{location*}', handler: handlers[config.componentTemplates](config) });
+        server.route({
+
+            method: 'GET', path: '/{location*}', handler: (request, reply) => {
+
+                const documentationLocation = 'README.md';
+
+                const modulePath = resolve(process.cwd(), config.componentPath);
+
+                const componentName = request.params.location;
+                const componentPath = `${modulePath}/${componentName}`;
+
+                const componentTree = treeWalker(modulePath, [extname(documentationLocation)]).walk();
+
+                fs.readFile(`${componentPath}/${documentationLocation}`, 'utf8', (err, markdown) => {
+                    reply.view('view/component', {
+                        brand: config.brand || 'ZOOL',
+                        componentName: componentName,
+                        location: componentPath,
+                        example: marked(markdown),
+                        componentTree: componentTree.children,
+                        year: '2015'
+                    });
+                });
+            }
+        });
 
     });
 

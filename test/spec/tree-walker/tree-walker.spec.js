@@ -4,91 +4,102 @@ let treeWalker = require(fromRoot('app/lib/tree-walker'));
 
 describe('treeWalker', () => {
 
-    let treeFromRoot, treeFromChild, treeFromFile;
+    let treeFromRoot, treeFromChild;
 
     beforeEach(syncSpec(() => {
 
-        let componentsToConsumeRootPath = fromRoot('example/components');
+        const componentsToConsumeRootPath = fromRoot('example/components');
 
-        treeFromRoot  = treeWalker(componentsToConsumeRootPath).walk();
-        treeFromChild = treeWalker(componentsToConsumeRootPath).walk('page-furniture/footer');
-        treeFromFile  = treeWalker(componentsToConsumeRootPath).walk('page-furniture/footer/footer.hbs');
+        treeFromRoot = treeWalker(componentsToConsumeRootPath, ['.md']).walk();
+        treeFromChild = treeWalker(componentsToConsumeRootPath, ['.md']).walk('nested/child');
+
     }));
 
     it('should have a parent directory equal to self when at root', syncSpec(() => {
-        expect(treeFromRoot.parent).to.equal('/components');
+        expect(treeFromRoot.parent).to.equal('/');
     }));
 
-    it('should have a parent directory equal to one level up when not at root', syncSpec(() => {
-        expect(treeFromChild.parent).to.equal('/components/page-furniture');
+    //it('should have a parent directory equal to one level up when not at root', syncSpec(() => {
+    //    expect(treeFromChild.parent).to.equal('/nested');
+    //}));
+
+    it('should have a path equal to root', syncSpec(() => {
+        expect(treeFromRoot.path).to.equal('/');
     }));
+
+    //it('should have a path equal to location of component', syncSpec(() => {
+    //    expect(treeFromChild.path).to.equal('/nested/child');
+    //}));
 
     it('should have a name corresponding to root of walked directory', syncSpec(() => {
         expect(treeFromRoot.name).to.equal('components');
     }));
 
-    it('should have a list of items', syncSpec(() => {
-        expect(treeFromRoot.items.length).to.equal(4);
+    //it('should have a name corresponding to name of component', syncSpec(() => {
+    //    expect(treeFromChild.name).to.equal('child');
+    //}));
+
+    it('should have a list of children', syncSpec(() => {
+        expect(treeFromRoot.children).to.have.length(3);
     }));
 
-    describe('item', () => {
+    describe('child', () => {
 
-        describe('directory', () => {
+        let childItem;
 
-            let directoryItem;
+        beforeEach(syncSpec(() => {
+            childItem = treeFromRoot.children[1];
+        }));
 
-            beforeEach(syncSpec(() => {
-                directoryItem = treeFromRoot.items[0];
-            }));
+        it('should have a parent', syncSpec(() => {
+            expect(childItem.parent).to.equal('/');
+        }));
 
-            it('should have a root', syncSpec(() => {
-                expect(directoryItem.root).to.equal('/');
-            }));
+        it('should have a path', syncSpec(() => {
+            expect(childItem.path).to.equal('/nested');
+        }));
 
-            it('should have a directory', syncSpec(() => {
-                expect(directoryItem.dir).to.equal('/components');
-            }));
+        it('should have a name', syncSpec(() => {
+            expect(childItem.name).to.equal('nested');
+        }));
 
-            it('should have a base name', syncSpec(() => {
-                expect(directoryItem.base).to.equal('button');
-            }));
+        it('should not have children', syncSpec(() => {
+            expect(childItem.children).to.have.length(1);
+        }));
 
-            it('should not have a file extension', syncSpec(() => {
-                expect(directoryItem.ext).to.equal('');
-            }));
-
-            it('should have a uri', syncSpec(() => {
-                expect(directoryItem.uri).to.equal('/components/button');
-            }));
-        });
-
-        describe('file', () => {
-
-            let fileItem;
-
-            beforeEach(syncSpec(() => {
-                fileItem = treeFromRoot.items[1];
-            }));
-
-            it('should have a root', syncSpec(() => {
-                expect(fileItem.root).to.equal('/');
-            }));
-
-            it('should have a directory', syncSpec(() => {
-                expect(fileItem.dir).to.equal('/components');
-            }));
-
-            it('should have a base name', syncSpec(() => {
-                expect(fileItem.base).to.equal('example.hbs');
-            }));
-
-            it('should have a file extension', syncSpec(() => {
-                expect(fileItem.ext).to.equal('.hbs');
-            }));
-
-            it('should have a uri', syncSpec(() => {
-                expect(fileItem.uri).to.equal('/components/example.hbs');
-            }));
-        });
+        it('should set isModule to false if no readme found', syncSpec(() => {
+            expect(childItem.isModule).to.be.false();
+        }));
     });
+
+    describe('nested child', () => {
+
+        let childItem;
+
+        beforeEach(syncSpec(() => {
+            childItem = treeFromRoot.children[1].children[0];
+        }));
+
+        it('should have a parent', syncSpec(() => {
+            expect(childItem.parent).to.equal('/nested');
+        }));
+
+        it('should have a path', syncSpec(() => {
+            expect(childItem.path).to.equal('/nested/child');
+        }));
+
+        it('should have a name', syncSpec(() => {
+            expect(childItem.name).to.equal('child');
+        }));
+
+        it('should not have children', syncSpec(() => {
+            expect(childItem.children).to.be.undefined();
+        }));
+
+        it('should set isModule to true when directory contains readme', syncSpec(() => {
+            expect(childItem.isModule).to.be.true();
+        }));
+
+    });
+
 });

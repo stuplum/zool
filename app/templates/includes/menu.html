@@ -1,10 +1,25 @@
-<div class="zool-menu">
-    <a href="/" class="zool-menu__heading">ZOOL</a>
-    <ul class="zool-menu-list">
-        {% for item in modules %}
-        <li class="zool-menu-list__item zool-menu-list__item--divided">
-            <a href="/{{ item.name }}" class="zool-menu__link">{{ item.name }}</a>
-        </li>
+{% macro menu(child, type="zool-menu-list") %}
+    <li class="{{ type }}__item {{ type }}__item--divided">
+        {% if child.isModule %}
+            <a href="{{ child.path }}" class="zool-menu__link {{ type }}__link" title="{{ child.name }}">{{ child.name }}</a>
+        {% else %}
+            <span class="zool-menu__link zool-menu__link--disabled {{ type }}__link {{ type }}__link--disabled" title="{{ child.name }}">{{ child.name }}</span>
+        {% endif %}
+    </li>
+    {% if child.children %}
+        <li class="{{ type }}__item {{ type }}__item--divided">
+        {% for childNode in child.children %}
+            <ul class="zool-menu-sublist">
+                {{ menu(childNode, 'zool-menu-sublist') }}
+            </ul>
         {% endfor %}
+        </li>
+    {% endif %}
+{% endmacro %}
+
+<div class="zool-menu">
+    <a href="/" class="zool-menu__heading zool-menu__link">ZOOL</a>
+    <ul class="zool-menu-list">
+        {% for item in componentTree %}{{ menu(item) }}{% endfor %}
     </ul>
 </div>

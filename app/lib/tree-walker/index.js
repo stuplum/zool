@@ -1,24 +1,25 @@
 'use strict';
 
-let _    = require('lodash'),
-    path = require('path'),
-    dt   = require('directory-tree').directoryTree;
+const _ = require('lodash');
+const join = require('path').join;
+const dirname = require('path').dirname;
+const resolve = require('path').resolve;
+const basename = require('path').basename;
 
-function TreeWalker(root) {
+const dt = require('directory-tree').directoryTree;
 
-    let rootName = path.basename(root),
-        rootPath = `/${rootName}`;
+function TreeWalker(root, filters) {
+
+    const rootName = basename(root);
+    const rootPath = `/${rootName}`;
 
     Object.defineProperty(this, 'walk', {
 
         value: start => {
 
-            let componentPath = start ? path.join(rootPath, start) : rootPath,
-                absoluteComponentPath = path.resolve(root, `./${start || ''}`);
-
-            let componentTree = dt(absoluteComponentPath);
-
-            //console.log('componentTree.type...', componentTree.type);
+            const componentPath = start ? join(rootPath, start) : rootPath;
+            const absoluteComponentPath = resolve(root, `./${start || ''}`);
+            const componentTree = dt(absoluteComponentPath, filters);
 
             return marshall(componentPath, componentTree);
         }
@@ -27,46 +28,24 @@ function TreeWalker(root) {
 
 function marshall(componentPath, tree) {
 
-    let parentDir = path.dirname(componentPath);
+    const path = tree.path === '' ? dirname(componentPath) : `/${tree.path}`;
+    const parent = dirname(path);
+    const name = tree.name;
 
-    let parent = parentDir === '/' ? componentPath : parentDir,
-        name   = tree.name,
-        items  = tree.children ? tree.children.map(child => asItem(componentPath, child)) : [];
+    const children = _.chain(tree.children)
+            .filter(child => child.type === 'directory')
+            .map(child => marshall(componentPath, child))
+            .value();
 
-    return { name, parent, items };
-}
+    const isModule = _.some(tree.children, child => child.type !== 'directory');
 
-function marshallFile(componentPath, tree) {
+    const marshalled = {parent, path, name, isModule};
 
-    let parentDir = path.dirname(componentPath);
-
-    let parent = parentDir === '/' ? componentPath : parentDir,
-        name   = tree.name,
-        items  = tree.children ? tree.children.map(child => asItem(componentPath, child)) : [];
-
-    return { name, parent, items };
-}
-
-let as = {
-
-    directory: function () {
-
-    },
-
-    file: function () {
-        console.log()
+    if (children.length) {
+        marshalled.children = children;
     }
-};
 
-function asItem(componentPath, child) {
-
-    let fullPath = toUri(componentPath, child);
-
-    return _.assign(path.parse(fullPath), { uri: fullPath });
+    return marshalled
 }
 
-function toUri(componentPath, child) {
-    return path.join(componentPath, child.path);
-}
-
-module.exports = root => new TreeWalker(root);
+module.exports = (root, filters) => new TreeWalker(root, filters);

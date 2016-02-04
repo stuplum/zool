@@ -14,7 +14,7 @@
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -40,23 +40,16 @@ template {
 }
 
 #zool-l-menu {
-    margin-left: -200px; /* "#zool-l-menu" width */
+    margin-left: -200px;
     width: 200px;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: 1000; /* so the menu or its navicon stays above all content */
+    z-index: 1000;
     background: #191818;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-}
-
-#zool-l-menu a {
-    color: #999;
-    border: none;
-    white-space: normal;
-    padding: 0.625em 1em;
 }
 
 #zool-l-main {
@@ -82,7 +75,7 @@ template {
 @media (min-width: 58em) {
 
     #zool-l-layout {
-        padding-left: 200px; /* left col width "#zool-l-menu" */
+        padding-left: 200px;
         left: 0;
     }
 
@@ -107,12 +100,12 @@ template {
     user-select: none;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 .zool-button::-moz-focus-inner {
     padding: 0;
-    border: 0
+    border: 0;
 }
 
 .zool-button {
@@ -121,32 +114,30 @@ template {
     padding: .5em 1em;
     color: #444;
     color: rgba(0, 0, 0, .8);
-    border: 1px solid #999;
     border: 0 rgba(0, 0, 0, 0);
     background-color: #E6E6E6;
     text-decoration: none;
-    border-radius: 2px
+    border-radius: 2px;
 }
 
 .zool-button--hover,
 .zool-button:hover,
 .zool-button:focus {
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000', GradientType=0);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0, 0, 0, .05)), to(rgba(0, 0, 0, .1)));
     background-image: -webkit-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
     background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .05) 0, rgba(0, 0, 0, .1));
     background-image: -o-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1))
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
 }
 
 .zool-button:focus {
-    outline: 0
+    outline: 0;
 }
 
 .zool-button--active,
 .zool-button:active {
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .15) inset, 0 0 6px rgba(0, 0, 0, .2) inset;
-    border-color: #000 \9
+    border-color: #000;
 }
 
 .zool-button[disabled],
@@ -156,22 +147,20 @@ template {
 .zool-button--disabled:active {
     border: 0;
     background-image: none;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-    filter: alpha(opacity=40);
     -khtml-opacity: .4;
     -moz-opacity: .4;
     opacity: .4;
     cursor: not-allowed;
-    box-shadow: none
+    box-shadow: none;
 }
 
 .zool-button--hidden {
-    display: none
+    display: none;
 }
 
 .zool-button::-moz-focus-inner {
     padding: 0;
-    border: 0
+    border: 0;
 }
 
 .zool-button--primary,
@@ -179,96 +168,107 @@ template {
 a.zool-button--primary,
 a.zool-button--selected {
     background-color: #0078e7;
-    color: #fff
+    color: #fff;
 }
 
 .zool-menu {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box
-}
-
-.zool-menu-list,
-.zool-menu-list__item {
-    position: relative
-}
-
-.zool-menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 0
-}
-
-.zool-menu-list__item {
-    padding: 0;
-    margin: 0;
-    height: 100%
-}
-
-.zool-menu__link,
-.zool-menu__heading {
-    display: block;
-    text-decoration: none;
-    white-space: nowrap
-}
-
-.zool-menu__heading {
-    text-transform: uppercase;
-    color: #565d64
-}
-
-.zool-menu__link {
-    color: #777
-}
-
-.zool-menu__link,
-.zool-menu__heading {
-    padding: .5em 1em
+    box-sizing: border-box;
 }
 
 .zool-menu--disabled {
-    opacity: .5
-}
-
-.zool-menu--disabled .zool-menu__link:hover {
-    background-color: transparent
-}
-
-.zool-menu__link:hover,
-.zool-menu__link:focus {
-    background-color: #eee
-}
-
-.zool-menu ul,
-.zool-menu .zool-menu-list__item--divided {
-    border-top: 1px solid #333;
-}
-
-.zool-menu ul {
-    border: none;
-    background: transparent;
-    display: block;
-}
-
-.zool-menu li a:hover,
-.zool-menu li a:focus {
-    background: #333;
+    opacity: .5;
 }
 
 .zool-menu__heading {
+    display: block;
+    margin-top: 0;
     font-size: 125%;
     font-weight: 300;
     letter-spacing: 0.1em;
-    color: #fff;
-    margin-top: 0;
-    padding: 0.5em 0.8em;
+    text-decoration: none;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .zool-menu__heading:hover,
 .zool-menu__heading:focus {
     color: #999;
 }
+
+.zool-menu__link {
+    display: block;
+    padding: 0.625em 1em;
+    border: none;
+    text-decoration: none;
+    color: #999;
+    white-space: normal;
+    transition: background-color .3s;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.zool-menu__link:hover,
+.zool-menu__link:focus {
+    background-color: #333;
+}
+
+.zool-menu__link--disabled {
+    cursor: default;
+}
+
+.zool-menu__link--disabled:hover,
+.zool-menu__link--disabled:focus {
+    background-color: transparent;
+}
+
+.zool-menu--disabled .zool-menu__link:hover {
+    background-color: transparent;
+}
+
+.zool-menu-list {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    list-style: none;
+}
+
+.zool-menu-list__item {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.zool-menu-list__item--divided {
+    border-top: 1px solid #333;
+}
+
+.zool-menu-sublist {
+    padding: 0;
+    list-style: none;
+    background-color: rgba(255, 255, 255, .05);
+}
+
+.zool-menu-sublist__link {
+    padding-top: .25em;
+    padding-bottom: .25em;
+}
+
+.zool-menu-sublist__link:before {
+    display: inline-block;
+    margin-right: .5em;
+    content: '⌞';
+}
+
+.zool-menu-sublist .zool-menu-sublist .zool-menu-sublist__link:before {
+    margin-left: 1em;
+}
+
 
 .zool-header {
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
