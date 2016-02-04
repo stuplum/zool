@@ -205,7 +205,6 @@ a.zool-button--selected {
     color: #999;
     white-space: normal;
     transition: background-color .3s;
-    text-transform: capitalize;
     cursor: pointer;
 }
 

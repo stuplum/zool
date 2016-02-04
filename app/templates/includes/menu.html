@@ -1,9 +1,9 @@
 {% macro menu(child, type="zool-menu-list") %}
     <li class="{{ type }}__item {{ type }}__item--divided">
         {% if child.isModule %}
-            <a href="{{ child.path }}" class="zool-menu__link {{ type }}__link" title="{{ child.name }}">{{ child.name }}</a>
+            <a href="{{ child.path }}" class="zool-menu__link {{ type }}__link">{{ child.name }}</a>
         {% else %}
-            <span class="zool-menu__link zool-menu__link--disabled {{ type }}__link {{ type }}__link--disabled" title="{{ child.name }}">{{ child.name }}</span>
+            <span class="zool-menu__link zool-menu__link--disabled {{ type }}__link {{ type }}__link--disabled">{{ child.name }}</span>
         {% endif %}
     </li>
     {% if child.children %}
