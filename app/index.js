@@ -145,6 +145,10 @@ internals.main = config => {
             getMarkdown('example', componentName, componentExample, cb);
         }
 
+        function fileExists(path, cb) {
+            fs.stat(path, err => cb(!err));
+        }
+
         server.route([
             {
                 method: 'GET', path: '/favicon.ico',
@@ -164,8 +168,8 @@ internals.main = config => {
                 method: 'GET', path: '/{location*}',
                 handler: (request, reply) => {
                     replyWithUsage(request, (usage, componentName, location) => {
-                        fs.stat(`${location}/${componentExample}`, err => {
-                            reply.view('view/component', { usage, componentName, location, hasExample: !err });
+                        fileExists(`${location}/${componentExample}`, hasExample => {
+                            reply.view('view/component', { usage, componentName, location, hasExample });
                         });
                     });
                 }
