@@ -1,7 +1,8 @@
 {
   "debug": true,
 
-  "componentPath": "example/components",
+  "componentHome": "README.md",
+  "componentBase": "example/components",
   "componentTemplates": "markdown",
 
   "styleParser": "sass",

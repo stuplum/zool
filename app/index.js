@@ -4,6 +4,7 @@ const fs = require('fs');
 const join = require('path').join;
 const extname = require('path').extname;
 const resolve = require('path').resolve;
+const moment = require('moment');
 
 const ZoolSass = require('zool-sass');
 const ZoolWebpack = require('zool-webpack');
@@ -11,6 +12,7 @@ const ZoolConfig = require('./lib/zool-config');
 const treeWalker = require('./lib/tree-walker');
 
 const Hapi = require('hapi');
+const Boom = require('boom');
 const hoek = require('hoek');
 const inert = require('inert');
 
@@ -22,6 +24,10 @@ const handlebars = require('handlebars');
 const internals = {};
 
 internals.main = config => {
+
+    const componentHome = config.componentHome;
+    const componentBase = resolve(process.cwd(), config.componentBase);
+    const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
     const port = Number(process.argv[2] || 8080);
     const server = new Hapi.Server();
@@ -36,9 +42,9 @@ internals.main = config => {
                 debug: config.debug,
                 entryPoint: config.sass.entryPoint,
                 extension: config.sass.extension,
-                src: config.componentPath,
+                src: config.componentBase,
                 dest: './_compiled/css',
-                includePaths: [config.componentPath],
+                includePaths: [config.componentBase],
                 outputStyle: 'nested',
                 sourceComments: true
             }
@@ -47,7 +53,7 @@ internals.main = config => {
             register: ZoolWebpack,
             options: {
                 debug: config.debug,
-                src: config.componentPath
+                src: config.componentBase
             }
         }
     ];
@@ -82,6 +88,40 @@ internals.main = config => {
             path: join(__dirname, 'templates')
         });
 
+
+        server.ext('onPreResponse', (request, reply) => {
+
+            const defaults = {
+                brand: config.brand || 'ZOOL',
+                componentTree: componentTree.children,
+                year: moment().year()
+            };
+
+            const response = request.response;
+
+            if (response.variety === 'view') {
+                Object.assign(response.source.context, defaults);
+            }
+
+            if (request.response.isBoom) {
+
+                const error = request.response.output.payload;
+                const additionalData = request.response.data;
+
+                // replace with zool-logger once its been written
+                console.log('Error:', error);
+
+                return reply
+                    .view('view/error', Object.assign(defaults, {
+                        error: Object.assign(error, additionalData)
+                    }))
+                    .code(error.statusCode);
+            }
+
+            reply.continue();
+        });
+
+
         server.route([
             { method: 'GET', path: '/favicon.ico', handler: { file: './public/favicon.ico' } }
         ]);
@@ -99,23 +139,19 @@ internals.main = config => {
 
             method: 'GET', path: '/{location*}', handler: (request, reply) => {
 
-                const documentationLocation = 'README.md';
-
-                const modulePath = resolve(process.cwd(), config.componentPath);
-
                 const componentName = request.params.location;
-                const componentPath = `${modulePath}/${componentName}`;
+                const componentPath = `${componentBase}/${componentName}`;
 
-                const componentTree = treeWalker(modulePath, [extname(documentationLocation)]).walk();
+                fs.readFile(`${componentPath}/${componentHome}`, 'utf8', (err, markdown) => {
 
-                fs.readFile(`${componentPath}/${documentationLocation}`, 'utf8', (err, markdown) => {
-                    reply.view('view/component', {
-                        brand: config.brand || 'ZOOL',
+                    if (err) {
+                        return reply(Boom.notFound(`${componentName} component not found`, { stacktrace: err }));
+                    }
+
+                    return reply.view('view/component', {
                         componentName: componentName,
                         location: componentPath,
-                        example: marked(markdown),
-                        componentTree: componentTree.children,
-                        year: '2015'
+                        example: marked(markdown)
                     });
                 });
             }

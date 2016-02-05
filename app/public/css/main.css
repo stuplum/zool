@@ -351,6 +351,13 @@ a.zool-button--selected {
     white-space: nowrap;
 }
 
+.zool-content > .stacktrace {
+    padding: 0.2em 0.4em;
+    display: block;
+    width: 100%;
+    overflow: auto;
+}
+
 @media screen and (min-width: 48em) {
 
     .zool-content {
