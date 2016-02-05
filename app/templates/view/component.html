@@ -1,7 +1,9 @@
 {% extends 'layout/app.html' %}
 
 {% block head %}
+{% if not hasExample %}
 <link rel="stylesheet" href="/css/{{ componentName }}.css" />
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -10,7 +12,16 @@
     <h2>{{ location }}</h2>
 </div>
 <div class="zool-content">
-    {{ example | safe }}
+    <div class="zool-content__section zool-usage">
+        {{ usage | safe }}
+    </div>
+    {% if hasExample %}
+    <div class="zool-content__section zool-component-frame">
+        <iframe src="/frame/{{ componentName }}"></iframe>
+    </div>
+    {% endif %}
 </div>
+{% if not hasExample %}
 <script src="/js/{{ componentName }}.js"></script>
+{% endif %}
 {% endblock %}

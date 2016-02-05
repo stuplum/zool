@@ -26,6 +26,7 @@ const internals = {};
 internals.main = config => {
 
     const componentHome = config.componentHome;
+    const componentExample = config.componentExample;
     const componentBase = resolve(process.cwd(), config.componentBase);
     const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
@@ -33,8 +34,8 @@ internals.main = config => {
     const server = new Hapi.Server();
 
     const manifest = [
-        { register: Vision },
-        { register: inert },
+        {register: Vision},
+        {register: inert},
         {
             register: ZoolSass,
             options: {
@@ -80,7 +81,7 @@ internals.main = config => {
                     },
 
                     prepare: function (options, next) {
-                        options.compileOptions.environment = Nunjucks.configure(options.path, { watch: false });
+                        options.compileOptions.environment = Nunjucks.configure(options.path, {watch: false});
                         return next();
                     }
                 }
@@ -121,41 +122,63 @@ internals.main = config => {
             reply.continue();
         });
 
+        function getMarkdown(type, request, componentHome, cb) {
+
+            const componentName = request.params.location;
+            const componentPath = `${componentBase}/${componentName}`;
+
+            fs.readFile(`${componentPath}/${componentHome}`, 'utf8', (err, markdown) => {
+
+                if (err) {
+                    throw Boom.notFound(`${componentName} ${type} not found`, { stacktrace: err });
+                }
+
+                cb(marked(markdown), componentName, componentPath);
+            });
+        }
+
+        function replyWithUsage(componentName, cb) {
+            getMarkdown('component', componentName, componentHome, cb);
+        }
+
+        function replyWithExample(componentName, cb) {
+            getMarkdown('example', componentName, componentExample, cb);
+        }
 
         server.route([
-            { method: 'GET', path: '/favicon.ico', handler: { file: './public/favicon.ico' } }
-        ]);
+            {
+                method: 'GET', path: '/favicon.ico',
+                handler: {
+                    file: './public/favicon.ico'
+                }
+            }, {
+                method: 'GET', path: '/assets/{param*}',
+                handler: {
+                    directory: {
+                        path: join(__dirname, 'public'),
+                        listing: true
+                    }
+                }
+            }, {
 
-        server.route({ method: 'GET', path: '/assets/{param*}',
-            handler: {
-                directory: {
-                    path: join(__dirname, 'public'),
-                    listing: true
+                method: 'GET', path: '/{location*}',
+                handler: (request, reply) => {
+                    replyWithUsage(request, (usage, componentName, location) => {
+                        fs.stat(`${location}/${componentExample}`, err => {
+                            reply.view('view/component', { usage, componentName, location, hasExample: !err });
+                        });
+                    });
+                }
+            }, {
+
+                method: 'GET', path: '/frame/{location*}',
+                handler: (request, reply) => {
+                    replyWithExample(request, (example, componentName) => {
+                        reply.view('view/component-frame', { example, componentName });
+                    });
                 }
             }
-        });
-
-        server.route({
-
-            method: 'GET', path: '/{location*}', handler: (request, reply) => {
-
-                const componentName = request.params.location;
-                const componentPath = `${componentBase}/${componentName}`;
-
-                fs.readFile(`${componentPath}/${componentHome}`, 'utf8', (err, markdown) => {
-
-                    if (err) {
-                        return reply(Boom.notFound(`${componentName} component not found`, { stacktrace: err }));
-                    }
-
-                    return reply.view('view/component', {
-                        componentName: componentName,
-                        location: componentPath,
-                        example: marked(markdown)
-                    });
-                });
-            }
-        });
+        ]);
 
     });
 

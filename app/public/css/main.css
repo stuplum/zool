@@ -313,6 +313,15 @@ a.zool-button--selected {
 
 }
 
+.zool-component-frame {
+    width: 100%;
+}
+
+.zool-component-frame iframe {
+    width: 100%;
+    border: 1px solid #e6e6e6;
+}
+
 .zool-content {
     flex: 1;
     margin-left: auto;
@@ -324,29 +333,38 @@ a.zool-button--selected {
     width: 100%;
 }
 
-.zool-content > h1,
-.zool-content > h2,
-.zool-content > h3,
-.zool-content > h4,
-.zool-content > h5,
-.zool-content > h6 {
+.zool-content__section {
+    margin-bottom: 2em;
+}
+
+.zool-content__section:first-child {
+    margin-top: 1em;
+}
+
+.zool-usage > h1,
+.zool-usage > h2,
+.zool-usage > h3,
+.zool-usage > h4,
+.zool-usage > h5,
+.zool-usage > h6 {
+    margin-top: 0;
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.zool-content > pre,
-.zool-content > code,
-.zool-content > .example {
+.zool-usage > pre,
+.zool-usage > code,
+.zool-usage > .example {
     padding: 1em;
     background: rgb(245, 245, 245);
 }
 
-.zool-content > pre,
-.zool-content > code {
+.zool-usage > pre,
+.zool-usage > code {
     color: #333;
     font-family: Consolas, Courier, monospace;
 }
 
-.zool-content > code {
+.zool-usage > code {
     padding: 0.2em 0.4em;
     white-space: nowrap;
 }

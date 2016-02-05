@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -34,6 +34,7 @@
     "directory-tree": "0.1.1",
     "handlebars": "^4.0.2",
     "hapi": "12.1.0",
+    "highlight.js": "9.1.0",
     "hoek": "^2.16.3",
     "inert": "^3.2.0",
     "lodash": "^3.10.1",

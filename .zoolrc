@@ -2,6 +2,7 @@
   "debug": true,
 
   "componentHome": "README.md",
+  "componentExample": "example.md",
   "componentBase": "example/components",
   "componentTemplates": "markdown",
 
