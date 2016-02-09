@@ -30,7 +30,7 @@ internals.main = config => {
     const componentBase = resolve(process.cwd(), config.componentBase);
     const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
-    const port = Number(process.argv[2] || 8080);
+    const port = Number(process.env.PORT || process.argv[2] || 8080);
     const server = new Hapi.Server();
 
     const manifest = [
