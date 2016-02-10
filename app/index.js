@@ -32,7 +32,6 @@ internals.main = config => {
     const componentBase = resolve(process.cwd(), config.componentBase);
     const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
-    const host = process.env.HOST || argv.host || 'localhost';
     const port = Number(process.env.PORT || argv.port || 8080);
 
     const server = new Hapi.Server();
@@ -63,7 +62,7 @@ internals.main = config => {
         }
     ];
 
-    server.connection({ host, port });
+    server.connection({ port });
 
     server.register(manifest, err => {
 
@@ -188,7 +187,7 @@ internals.main = config => {
     });
 
     server.start(() => {
-        console.log(`App started: ${host}:${port}`);
+        console.log(`App started: ${server.info.uri}`);
     });
 
 };
