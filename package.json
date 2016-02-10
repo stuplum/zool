@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -43,6 +43,7 @@
     "nunjucks": "^2.2.0",
     "vision": "^4.0.1",
     "walk": "2.3.9",
+    "yargs": "3.32.0",
     "zool-sass": "0.1.2",
     "zool-webpack": "0.1.2"
   },

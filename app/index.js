@@ -1,5 +1,7 @@
 'use strict';
 
+const argv = require('yargs').argv;
+
 const fs = require('fs');
 const join = require('path').join;
 const extname = require('path').extname;
@@ -30,7 +32,9 @@ internals.main = config => {
     const componentBase = resolve(process.cwd(), config.componentBase);
     const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
-    const port = Number(process.env.PORT || process.argv[2] || 8080);
+    const host = process.env.HOST || argv.host || 'localhost';
+    const port = Number(process.env.PORT || argv.port || 8080);
+
     const server = new Hapi.Server();
 
     const manifest = [
@@ -59,10 +63,7 @@ internals.main = config => {
         }
     ];
 
-    server.connection({
-        port: port,
-        host: 'localhost'
-    });
+    server.connection({ host, port });
 
     server.register(manifest, err => {
 
@@ -187,7 +188,7 @@ internals.main = config => {
     });
 
     server.start(() => {
-        console.log(`App started on port ${port}`);
+        console.log(`App started: ${host}:${port}`);
     });
 
 };
