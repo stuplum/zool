@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -9,9 +9,6 @@
   "scripts": {
     "serve": "node ./app",
     "test": "lab -I 'describe,it,before,beforeEach,after,afterEach,expect,syncSpec,fromRoot' test/unit.lab.js"
-  },
-  "engines": {
-    "node": ">=4.2.2"
   },
   "repository": {
     "type": "git",
