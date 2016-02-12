@@ -20,6 +20,11 @@
         <iframe src="/frame/{{ componentName }}"></iframe>
     </div>
     {% endif %}
+
+    <div class="zool-content__section zool-highlighted">
+        {{ highlightedCss | safe }}
+    </div>
+
 </div>
 {% if not hasExample %}
 <script src="/js/{{ componentName }}.js"></script>
