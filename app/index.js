@@ -11,12 +11,14 @@ const moment = require('moment');
 const ZoolSass = require('zool-sass');
 const ZoolWebpack = require('zool-webpack');
 const ZoolConfig = require('./lib/zool-config');
+const zoolLogger = require('zool-utils').ZoolLogger;
 const treeWalker = require('./lib/tree-walker');
 
 const Hapi = require('hapi');
 const Boom = require('boom');
 const hoek = require('hoek');
 const inert = require('inert');
+const highlight = require('highlight.js').highlight;
 
 const Vision = require('vision');
 const marked = require('marked');
@@ -26,6 +28,8 @@ const handlebars = require('handlebars');
 const internals = {};
 
 internals.main = config => {
+
+    const logger = zoolLogger('zool');
 
     const componentHome = config.componentHome;
     const componentExample = config.componentExample;
@@ -40,9 +44,9 @@ internals.main = config => {
         {register: Vision},
         {register: inert},
         {
-            register: ZoolSass,
+            register: ZoolSass.route,
             options: {
-                force: true,
+                force: false,
                 debug: config.debug,
                 entryPoint: config.sass.entryPoint,
                 extension: config.sass.extension,
@@ -109,8 +113,7 @@ internals.main = config => {
                 const error = request.response.output.payload;
                 const additionalData = request.response.data;
 
-                // replace with zool-logger once its been written
-                console.log('Error:', error);
+                logger.error('Error', error);
 
                 return reply
                     .view('view/error', Object.assign(defaults, {
@@ -169,7 +172,23 @@ internals.main = config => {
                 handler: (request, reply) => {
                     replyWithUsage(request, (usage, componentName, location) => {
                         fileExists(`${location}/${componentExample}`, hasExample => {
-                            reply.view('view/component', { usage, componentName, location, hasExample });
+
+                            const opts = {
+                                force: true,
+                                entryPoint: config.sass.entryPoint,
+                                extension: config.sass.extension,
+                                src: config.componentBase,
+                                dest: './_compiled/css',
+                                includePaths: [config.componentBase],
+                                outputStyle: 'expanded'
+                            };
+
+                            ZoolSass.compiler.compile(componentName, opts)
+                                .then(css => {
+                                    const highlightedCss = `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
+                                    reply.view('view/component', { usage, componentName, location, hasExample, highlightedCss });
+                                });
+
                         });
                     });
                 }
@@ -187,7 +206,7 @@ internals.main = config => {
     });
 
     server.start(() => {
-        console.log(`App started: ${server.info.uri}`);
+        logger.log('App started', server.info.uri);
     });
 
 };
