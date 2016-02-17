@@ -184,9 +184,17 @@ internals.main = config => {
                             };
 
                             ZoolSass.compiler.compile(componentName, opts)
+
                                 .then(css => {
-                                    const highlightedCss = `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
+                                    return `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
+                                })
+
+                                .then(highlightedCss => {
                                     reply.view('view/component', { usage, componentName, location, hasExample, highlightedCss });
+                                })
+
+                                .catch(() => {
+                                    reply.view('view/component', { usage, componentName, location, hasExample });
                                 });
 
                         });

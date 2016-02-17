@@ -40,7 +40,7 @@ describe('treeWalker', () => {
     //}));
 
     it('should have a list of children', syncSpec(() => {
-        expect(treeFromRoot.children).to.have.length(3);
+        expect(treeFromRoot.children).to.have.length(4);
     }));
 
     describe('child', () => {
