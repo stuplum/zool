@@ -58,7 +58,7 @@ internals.main = config => {
             }
         },
         {
-            register: ZoolWebpack,
+            register: ZoolWebpack.route,
             options: {
                 debug: config.debug,
                 src: config.componentBase

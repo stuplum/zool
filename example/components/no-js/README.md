@@ -1,0 +1,1 @@
+<span class="no-can-haz-js">This component haz no Javascript...</span>
