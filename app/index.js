@@ -59,10 +59,11 @@ internals.main = config => {
         },
         {
             register: ZoolWebpack.route,
-            options: {
+            options: Object.assign(config.webpack || {}, {
                 debug: config.debug,
-                src: config.componentBase
-            }
+                src: config.componentBase,
+                context: process.cwd()
+            })
         }
     ];
 

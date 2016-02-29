@@ -1,3 +1,7 @@
 'use strict';
 
-console.log('double nested child component');
+const message = 'double nested child component';
+
+const dave = message => console.log({ message, from: 'es6' });
+
+dave(message);
