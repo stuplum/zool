@@ -23,5 +23,18 @@ function json(file) {
 }
 
 module.exports = function rc(name, cwd) {
-    return json(find(`.${name}rc`, cwd));
-}
+
+    let config;
+
+    const zoolrc = find(`.${name}rc`, cwd);
+
+    try {
+        config = json(zoolrc);
+    } catch (ex) {
+        const someDir = `${cwd}/.${name}rc`;
+        config = require(someDir);
+    }
+
+
+    return config;
+};

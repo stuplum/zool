@@ -9,6 +9,7 @@ describe('rc', function() {
     var tempDir = new TempDir('zool-config-tests');
 
     tempDir.prepare({
+        '.jsrc': 'module.exports = { dave: 123 };',
         '.daverc': { key: 'dave' },
         '.chazrc/foo': { key: 'chaz' }
     });
@@ -24,6 +25,13 @@ describe('rc', function() {
 
         expect(config.key).to.equal('dave');
         expect(config.key2).to.equal(undefined);
+    }));
+
+    it('correctly reads .xxxrc files when they contain js', syncSpec(() => {
+
+        const config = rc('js', tempDir.path);
+
+        expect(config.dave).to.equal(123);
     }));
 
     it('throws an easy to understand error if .xxxrc is a dir', syncSpec(() => {
