@@ -9,10 +9,18 @@
         pre, code {}
     </style>
     <link rel="stylesheet" href="/css/{{ componentName }}.css" />
+    <script>
+        var ZOOL = ZOOL || {};
+    </script>
 </head>
 <body>
     {{ example | safe }}
-    <script src="/assets/js/frame.js"></script>
     <script src="/js/{{ componentName }}.js"></script>
+    <script src="/assets/js/frame.js"></script>
+    <script>
+        if (ZOOL.resource) {
+            ZOOL.proxy.add(ZOOL.resource);
+        }
+    </script>
 </body>
 </html>

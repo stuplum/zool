@@ -27,29 +27,4 @@ function getFakeUrl(url, id) {
 
 }
 
-const resource = {
-    url: 'http://example.com/dave/search',
-    response: {
-        status: 200,
-        body: [
-            {
-                "title": "Alchemy",
-                "classification": "Writing",
-                "url": "https://www.pottermore.com/writing-by-jk-rowling/alchemy",
-                "type": "Writing",
-                "label": "j.k. rowling writing"
-            },
-            {
-                "title": "Something Else",
-                "classification": "Writing",
-                "url": "https://www.pottermore.com/writing-by-jk-rowling/something-else",
-                "type": "Writing",
-                "label": "j.k. rowling writing"
-            }
-        ]
-    }
-};
-
 window.getFakeUrl = getFakeUrl;
-
-ZOOL.proxy.add(resource);
