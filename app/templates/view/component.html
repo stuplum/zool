@@ -17,7 +17,7 @@
     </div>
     {% if hasExample %}
     <div class="zool-content__section zool-component-frame">
-        <iframe src="/frame/{{ componentName }}"></iframe>
+        <iframe id="example" src="/frame/{{ componentName }}"></iframe>
     </div>
     {% endif %}
 
@@ -29,4 +29,6 @@
 {% if not hasExample %}
 <script src="/js/{{ componentName }}.js"></script>
 {% endif %}
+
+<script src="/assets/js/main.js"></script>
 {% endblock %}

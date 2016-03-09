@@ -157,7 +157,13 @@ internals.main = config => {
             {
                 method: 'GET', path: '/favicon.ico',
                 handler: {
-                    file: './public/favicon.ico'
+                    file: join(__dirname, 'public', 'favicon.ico')
+                }
+            },
+            {
+                method: 'GET', path: '/sw.js',
+                handler: {
+                    file: join(__dirname, 'public', 'js', 'sw.js')
                 }
             }, {
                 method: 'GET', path: '/assets/{param*}',

@@ -271,7 +271,6 @@ a.zool-button--selected {
 
 .zool-header {
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    max-width: 768px;
     margin: 0 auto;
     padding: 1em;
     text-align: center;
@@ -319,6 +318,7 @@ a.zool-button--selected {
 
 .zool-component-frame iframe {
     width: 100%;
+    height: 1000px;
     border: 1px solid #e6e6e6;
 }
 
@@ -394,4 +394,35 @@ a.zool-button--selected {
     border-top: 1px solid #eee;
     padding: .5em 2em;
     background: rgb(250, 250, 250);
+}
+
+#zool-l-menu .zool-sw-indicator {
+    position: absolute;
+    bottom: 0;
+}
+
+.zool-sw-indicator {
+    display: inline-block;
+    width: 100%;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, .1);
+}
+
+.zool-sw-indicator:before {
+    content: 'serviceWorker: ';
+    font-size: 10px;
+    color: #999;
+}
+
+.zool-sw-indicator.is-loading {
+    color: yellow;
+}
+
+.zool-sw-indicator.is-loaded {
+    color: green;
+}
+
+.zool-highlighted {
+    max-height: 300px;
+    overflow: auto;
 }
