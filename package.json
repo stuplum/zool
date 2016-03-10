@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -42,9 +42,9 @@
     "vision": "^4.0.1",
     "walk": "2.3.9",
     "yargs": "3.32.0",
-    "zool-sass": "0.1.4",
+    "zool-sass": "0.1.5",
     "zool-utils": "0.1.1",
-    "zool-webpack": "0.1.8"
+    "zool-webpack": "0.1.9"
   },
   "devDependencies": {
     "code": "^1.5.0",
