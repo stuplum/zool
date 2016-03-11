@@ -32,4 +32,38 @@
 {% endif %}
 
 <script src="/assets/js/main.js"></script>
+{% if hasExample %}
+<script>
+
+    function iframeResizer(iframe, delay, padding) {
+
+        var initialHeight = iframe.offsetHeight;
+        var currentHeight = initialHeight;
+
+        iframe.style.height = initialHeight + 'px';
+
+        padding = padding || 2;
+
+        var interval = setInterval(function () {
+
+            var newHeight = iframe.contentWindow.document.body.offsetHeight + padding;
+
+            if (newHeight > initialHeight && newHeight !== currentHeight) {
+                iframe.style.height = newHeight + 'px';
+                currentHeight = newHeight;
+            }
+
+        }, delay);
+
+        return {
+            stop: function () {
+                clearInterval(interval);
+            }
+        }
+    }
+
+    iframeResizer(document.querySelector('#example'), 2000);
+
+</script>
+{% endif %}
 {% endblock %}
