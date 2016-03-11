@@ -11,5 +11,9 @@
   "sass": {
     "entryPoint": "style/_index",
     "extension": "scss"
+  },
+
+  "fonts": {
+    "location": "assets/fonts"
   }
 }

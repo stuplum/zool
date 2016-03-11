@@ -156,7 +156,7 @@ internals.main = config => {
             fs.stat(path, err => cb(!err));
         }
 
-        server.route([
+        var routes = [
             {
                 method: 'GET', path: '/favicon.ico',
                 handler: {
@@ -219,7 +219,21 @@ internals.main = config => {
                     });
                 }
             }
-        ]);
+        ];
+
+        if (config.fonts) {
+            routes.unshift({
+                method: 'GET', path: `/${config.fonts.location}/{param*}`,
+                handler: {
+                    directory: {
+                        path: join(process.cwd(), config.componentBase, config.fonts.location),
+                        listing: true
+                    }
+                }
+            });
+        }
+
+        server.route(routes);
 
     });
 
