@@ -14,6 +14,7 @@
   },
 
   "fonts": {
+    "url": "assets/fonts",
     "location": "assets/fonts"
   }
 }

@@ -222,11 +222,15 @@ internals.main = config => {
         ];
 
         if (config.fonts) {
+
+            const fontsPath = `/${config.fonts.url}/{param*}`;
+            const fontsLocation = join(process.cwd(), config.componentBase, config.fonts.location);
+
             routes.unshift({
-                method: 'GET', path: `/${config.fonts.location}/{param*}`,
+                method: 'GET', path: fontsPath,
                 handler: {
                     directory: {
-                        path: join(process.cwd(), config.componentBase, config.fonts.location),
+                        path: fontsLocation,
                         listing: true
                     }
                 }
