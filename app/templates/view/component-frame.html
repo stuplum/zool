@@ -3,17 +3,36 @@
 <head>
     <title>{{ componentName }}</title>
     <style>
-        body {
+        .simple {
             background-color: #eee;
         }
-        pre, code {}
+
+        .checkerboard {
+            background-image:
+                    -moz-linear-gradient(45deg, #ccc 25%, transparent 25%),
+                    -moz-linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                    -moz-linear-gradient(45deg, transparent 75%, #ccc 75%),
+                    -moz-linear-gradient(-45deg, transparent 75%, #ccc 75%);
+
+            background-image:
+                    -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #ccc), color-stop(.25, transparent)),
+                    -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, #ccc), color-stop(.25, transparent)),
+                    -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, #ccc)),
+                    -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, #ccc));
+
+             -moz-background-size: 16px 16px;
+             background-size: 16px 16px;
+            -webkit-background-size: 16px 17px;
+
+            background-position: 0 0, 8px 0, 8px -8px, 0 8px;
+        }
     </style>
     <link rel="stylesheet" href="/css/{{ componentName }}.css" />
     <script>
         var ZOOL = ZOOL || {};
     </script>
 </head>
-<body>
+<body class="checkerboard">
     {{ example | safe }}
     <script src="/js/{{ componentName }}.js"></script>
     <script src="/assets/js/frame.js"></script>

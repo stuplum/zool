@@ -271,14 +271,12 @@ a.zool-button--selected {
 
 .zool-header {
     font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 0 auto;
+    margin: 0 2em;
     padding: 1em;
-    max-width: 768px;
     text-align: center;
     border-bottom: 1px solid #eee;
     background: #fff;
     letter-spacing: 0.05em;
-    width: 100%;
 }
 
 .zool-header h1 {
@@ -329,8 +327,9 @@ a.zool-button--selected {
     margin-right: auto;
     padding-left: 1em;
     padding-right: 1em;
-    color: black;
     width: 100%;
+    color: black;
+    overflow: auto;
 }
 
 .zool-content__section {
@@ -386,14 +385,29 @@ a.zool-button--selected {
     .zool-content p {
         font-size: 1.125em;
     }
-
 }
 
 .zool-footer {
-    font-size: 87.5%;
+    display: flex;
+    padding: 0 2em;
+    height: 40px;
     border-top: 1px solid #eee;
-    padding: .5em 2em;
     background: rgb(250, 250, 250);
+    font-size: 87.5%;
+    align-items: center;
+}
+
+.zool-footer span {
+    margin-left: auto;
+    color: #acacac;
+}
+
+.component-set-version {
+    font-size: 90%;
+}
+.component-set-version:before {
+    content: 'version:';
+    margin-right: 5px;
 }
 
 #zool-l-menu .zool-sw-indicator {
@@ -402,13 +416,16 @@ a.zool-button--selected {
 }
 
 .zool-sw-indicator {
-    display: inline-block;
+    display: inline-flex;
+    padding: 0 10px;
+    height: 40px;
     width: 100%;
-    padding: 5px 10px;
     background: rgba(255, 255, 255, .1);
+    align-items: center;
 }
 
 .zool-sw-indicator:before {
+    margin-right: 5px;
     content: 'serviceWorker: ';
     font-size: 10px;
     color: #999;
@@ -422,7 +439,7 @@ a.zool-button--selected {
     color: green;
 }
 
-.zool-highlighted {
+.zool-highlighted > pre {
     max-height: 300px;
     overflow: auto;
 }

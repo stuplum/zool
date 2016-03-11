@@ -1,5 +1,7 @@
 'use strict';
 
+const version = require(`${process.cwd()}/package.json`).version;
+
 const argv = require('yargs').argv;
 
 const fs = require('fs');
@@ -100,7 +102,8 @@ internals.main = config => {
             const defaults = {
                 brand: config.brand || 'ZOOL',
                 componentTree: componentTree.children,
-                year: moment().year()
+                year: moment().year(),
+                version
             };
 
             const response = request.response;

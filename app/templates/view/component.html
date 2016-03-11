@@ -21,10 +21,11 @@
     </div>
     {% endif %}
 
+    {% if highlightedCss %}
     <div class="zool-content__section zool-highlighted">
         {{ highlightedCss | safe }}
     </div>
-
+    {% endif %}
 </div>
 {% if not hasExample %}
 <script src="/js/{{ componentName }}.js"></script>
