@@ -12,6 +12,8 @@ const moment = require('moment');
 
 const ZoolSass = require('zool-sass');
 const ZoolWebpack = require('zool-webpack');
+const ZoolStaticAssets = require('zool-static-assets');
+
 const ZoolConfig = require('./lib/zool-config');
 const zoolLogger = require('zool-utils').ZoolLogger;
 const treeWalker = require('./lib/tree-walker');
@@ -45,6 +47,12 @@ internals.main = config => {
     const manifest = [
         {register: Vision},
         {register: inert},
+        {
+            register: ZoolStaticAssets.route,
+            options: Object.assign({
+                baseDir: config.componentBase
+            }, config.fonts || {})
+        },
         {
             register: ZoolSass.route,
             options: {
@@ -156,7 +164,7 @@ internals.main = config => {
             fs.stat(path, err => cb(!err));
         }
 
-        var routes = [
+        server.route([
             {
                 method: 'GET', path: '/favicon.ico',
                 handler: {
@@ -219,25 +227,7 @@ internals.main = config => {
                     });
                 }
             }
-        ];
-
-        if (config.fonts) {
-
-            const fontsPath = `/${config.fonts.url}/{param*}`;
-            const fontsLocation = join(process.cwd(), config.componentBase, config.fonts.location);
-
-            routes.unshift({
-                method: 'GET', path: fontsPath,
-                handler: {
-                    directory: {
-                        path: fontsLocation,
-                        listing: true
-                    }
-                }
-            });
-        }
-
-        server.route(routes);
+        ]);
 
     });
 
