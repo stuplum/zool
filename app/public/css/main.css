@@ -321,6 +321,37 @@ a.zool-button--selected {
     transition: height .5s;
 }
 
+.zool-component-frame__new-tab {
+    position: relative;
+    float: right;
+    display: flex;
+    height: 20px;
+    width: 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px 3px 0 0;
+    bottom: -1px;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.zool-component-frame__new-tab:after {
+    position: absolute;
+    display: block;
+    height: 1px;
+    width: 18px;
+    left: 0;
+    bottom: -1px;
+    content: '';
+    background-color: #f5f5f5;
+}
+
+.zool-component-frame__new-tab > img {
+    display: block;
+    height: 12px;
+    width: 12px;
+}
+
 .zool-content {
     flex: 1;
     margin-left: auto;
