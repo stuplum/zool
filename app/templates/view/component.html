@@ -12,9 +12,6 @@
     <h2>{{ location }}</h2>
 </div>
 <div class="zool-content">
-    <div class="zool-content__section zool-usage">
-        {{ usage | safe }}
-    </div>
     {% if hasExample %}
     <div class="zool-content__section zool-component-frame">
         <a class="zool-component-frame__new-tab" href="/frame/{{ componentName }}" target="_blank" title="Open {{ componentName }} in a new tab">
@@ -23,6 +20,10 @@
         <iframe id="example" src="/frame/{{ componentName }}"></iframe>
     </div>
     {% endif %}
+
+    <div class="zool-content__section zool-usage">
+        {{ usage | safe }}
+    </div>
 
     {% if highlightedCss %}
     <div class="zool-content__section zool-highlighted">
