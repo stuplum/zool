@@ -353,8 +353,11 @@ a.zool-button--selected {
 .zool-usage > pre,
 .zool-usage > code,
 .zool-usage > .example {
+    display: block;
     padding: 1em;
+    max-height: 400px;
     background: rgb(245, 245, 245);
+    overflow: auto;
 }
 
 .zool-usage > pre,
