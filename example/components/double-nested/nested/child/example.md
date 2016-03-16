@@ -1,5 +1,7 @@
 <script>
 
+    ZOOL.debug = true;
+
     ZOOL.resource = {
         url: 'http://example.com/dave/search',
         response: {

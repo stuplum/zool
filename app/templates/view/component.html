@@ -38,7 +38,13 @@
 <script src="/assets/js/main.js"></script>
 {% if hasExample %}
 <script>
-    iframeResizer(document.querySelector('#example'), 1000);
+
+    const iframe = document.querySelector('#example');
+
+    iframe.onload = function () {
+        iframeResizer(document.querySelector('#example'), 1000);
+    };
+
 </script>
 {% endif %}
 {% endblock %}

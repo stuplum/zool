@@ -51,14 +51,15 @@ function iframeResizer(iframe, delay, padding) {
 
     padding = padding || 2;
 
-    var initialHeight = getIframeHeight(iframe, padding);
-    var currentHeight = initialHeight;
+    const initialHeight = getIframeHeight(iframe, padding);
+
+    let currentHeight = initialHeight;
 
     iframe.style.height = initialHeight + 'px';
 
-    var interval = setInterval(function () {
+    const interval = setInterval(function () {
 
-        var newHeight = getIframeHeight(iframe, padding);
+        const newHeight = getIframeHeight(iframe, padding);
 
         if (newHeight > initialHeight && newHeight !== (currentHeight + padding)) {
             iframe.style.height = newHeight + 'px';

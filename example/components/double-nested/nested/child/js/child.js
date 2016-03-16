@@ -2,6 +2,8 @@
 
 function getFakeUrl(url, id) {
 
+    const targetEl = document.getElementById(id);
+
     const xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function () {
@@ -10,13 +12,13 @@ function getFakeUrl(url, id) {
 
             switch (xmlhttp.status) {
                 case 200:
-                    document.getElementById(id).innerHTML = xmlhttp.responseText;
+                    targetEl.innerHTML = xmlhttp.responseText;
                     break;
-                case 400:
-                    console.log('There was an error 400');
+                case 404:
+                    console.log('404: $s not found', url);
                     break;
                 default:
-                    console.log('something else other than 200 was returned');
+                    console.log('something else other than 200 was returned', xmlhttp.status);
                     break;
             }
         }
