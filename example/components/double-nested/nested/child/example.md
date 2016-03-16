@@ -25,8 +25,21 @@
 
 </script>
 
-This is the real example actually running.....
+<style>
+    .dummy {
+        margin: 2em;
+        padding: 2em;
+        min-height: 300px;
+        border: 1px solid #acacac;
+        background: rgba(0, 0, 0, .2);
+    }
+    
+    .spit-the-dummy {
+        color: white;
+    }
+</style>
 
-<div id="putMeHere"></div>
-
-<button onclick="getFakeUrl('http://example.com/dave/search', 'putMeHere')">Get Fake....</button>
+<div class="dummy">
+    <button onclick="getFakeUrl('http://example.com/dave/search', 'putMeHere')">Get Fake....</button>
+    <div id="putMeHere" class="spit-the-dummy"></div>
+</div>

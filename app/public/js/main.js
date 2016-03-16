@@ -42,3 +42,34 @@ if ('serviceWorker' in navigator) {
     });
 
 }
+
+function getIframeHeight(iframe, padding) {
+    return iframe.contentWindow.document.body.scrollHeight + padding;
+}
+
+function iframeResizer(iframe, delay, padding) {
+
+    padding = padding || 2;
+
+    var initialHeight = getIframeHeight(iframe, padding);
+    var currentHeight = initialHeight;
+
+    iframe.style.height = initialHeight + 'px';
+
+    var interval = setInterval(function () {
+
+        var newHeight = getIframeHeight(iframe, padding);
+
+        if (newHeight > initialHeight && newHeight !== (currentHeight + padding)) {
+            iframe.style.height = newHeight + 'px';
+            currentHeight = newHeight;
+        }
+
+    }, delay);
+
+    return {
+        stop: function () {
+            clearInterval(interval);
+        }
+    }
+}
