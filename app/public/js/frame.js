@@ -2,6 +2,10 @@
 
 var ZOOL = ZOOL || {};
 
+function postMessage(message) {
+    navigator.serviceWorker.controller.postMessage(message);
+}
+
 ZOOL.proxy = {
 
     add: function (resource, debug) {
@@ -12,29 +16,45 @@ ZOOL.proxy = {
         };
 
         if (debug) {
-            console.log('proxy:add', message);
+            console.debug('proxy:add', message);
         }
 
         if ('serviceWorker' in navigator) {
 
+            navigator.serviceWorker.ready.then(function (reg) {
+
+                if (debug) {
+                    console.debug('proxy:ready', message);
+                }
+
+                if (reg.active.state === 'activated') {
+
+                    if (debug) {
+                        console.debug('proxy:ready:activated', message);
+                    }
+
+                    postMessage(message);
+                }
+            });
+
             navigator.serviceWorker.oncontrollerchange = () => {
 
                 if (debug) {
-                    console.log('service worker controller change');
+                    console.debug('proxy:controllerchange');
                 }
 
                 navigator.serviceWorker.controller.onstatechange = function () {
 
                     if (debug) {
-                        console.log('controller state changed');
+                        console.debug('proxy:statechange');
                     }
 
-                    this.postMessage(message);
+                    postMessage(message);
                 };
             };
 
         } else {
-            console.log('ServiceWorker unsupported');
+            console.error('proxy:error', 'ServiceWorker unsupported');
         }
 
     }

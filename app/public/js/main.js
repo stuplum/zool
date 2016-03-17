@@ -38,7 +38,7 @@ if ('serviceWorker' in navigator) {
     })
 
     .catch(function(err) {
-        console.log('ServiceWorker registration failed: ', err);
+        console.error('ServiceWorker registration failed: ', err);
     });
 
 }

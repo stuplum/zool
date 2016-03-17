@@ -4,7 +4,7 @@ let DEBUG = false;
 
 function log() {
     if (DEBUG) {
-        console.log.apply(console, arguments);
+        console.debug.apply(console, arguments);
     }
 }
 
@@ -55,12 +55,12 @@ class Proxy {
 let proxy;
 
 self.addEventListener('install', () => {
-    console.debug('SW:installed');
+    console.info('SW:installed');
     proxy = new Proxy();
 });
 
 self.addEventListener('activate', event => {
-    console.debug('SW:activated');
+    console.info('SW:activated');
     event.waitUntil(self.clients.claim());
 });
 
