@@ -13,8 +13,8 @@
     "extension": "scss"
   },
 
-  "fonts": {
-    "url": "assets/fonts",
-    "location": "assets/fonts"
+  "staticAssets": {
+    "url": "assets",
+    "location": "assets"
   }
 }

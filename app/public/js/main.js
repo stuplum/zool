@@ -33,7 +33,7 @@ if ('serviceWorker' in navigator) {
         if (navigator.serviceWorker.controller) {
             return navigator.serviceWorker.ready.then(() => swIndicator.loaded());
         } else {
-            return navigator.serviceWorker.register('/sw.js').then(() => swIndicator.loaded());
+            return navigator.serviceWorker.register('/_sw.js').then(() => swIndicator.loaded());
         }
     })
 

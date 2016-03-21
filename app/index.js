@@ -51,7 +51,7 @@ internals.main = config => {
             register: ZoolStaticAssets.route,
             options: Object.assign({
                 baseDir: config.componentBase
-            }, config.fonts || {})
+            }, config.staticAssets || {})
         },
         {
             register: ZoolSass.route,
@@ -172,12 +172,12 @@ internals.main = config => {
                 }
             },
             {
-                method: 'GET', path: '/sw.js',
+                method: 'GET', path: '/_sw.js',
                 handler: {
                     file: join(__dirname, 'public', 'js', 'sw.js')
                 }
             }, {
-                method: 'GET', path: '/assets/{param*}',
+                method: 'GET', path: '/_assets/{param*}',
                 handler: {
                     directory: {
                         path: join(__dirname, 'public'),
