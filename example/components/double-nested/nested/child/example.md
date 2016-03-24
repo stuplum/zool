@@ -33,7 +33,7 @@
         padding: 2em;
         min-height: 300px;
         border: 1px solid #acacac;
-        background: rgba(0, 0, 0, .2);
+        background: url('/assets/another-ping.png');
     }
     
     .spit-the-dummy {
