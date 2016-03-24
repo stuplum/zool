@@ -50,6 +50,7 @@ internals.main = config => {
         {
             register: ZoolStaticAssets.route,
             options: Object.assign({
+                debug: config.debug,
                 baseDir: config.componentBase
             }, config.staticAssets || {})
         },

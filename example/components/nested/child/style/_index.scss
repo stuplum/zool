@@ -1,3 +1,18 @@
 body {
   color: green;
 }
+
+.some-image {
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, .25);
+}
+
+.some-ping {
+  background-image: url('/assets/img/some-ping.png');
+}
+
+.some-other-ping {
+  background-image: url('/assets/img/some-other-ping.png');
+}
