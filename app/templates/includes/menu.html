@@ -19,7 +19,9 @@
 
 <div class="zool-menu">
     <a href="/" class="zool-menu__heading zool-menu__link">ZOOL</a>
-    <ul class="zool-menu-list">
-        {% for item in componentTree %}{{ menu(item) }}{% endfor %}
-    </ul>
+    <div class="zool-menu__list">
+        <ul class="zool-menu-list">
+            {% for item in componentTree %}{{ menu(item) }}{% endfor %}
+        </ul>
+    </div>
 </div>
