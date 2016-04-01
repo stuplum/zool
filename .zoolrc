@@ -1,20 +1,26 @@
-{
-  "debug": true,
+'use strict';
 
-  "componentHome": "README.md",
-  "componentExample": "example.md",
-  "componentBase": "example/components",
-  "componentTemplates": "markdown",
+module.exports = {
+  debug: false,
 
-  "styleParser": "sass",
+  componentHome: 'README.md',
+  componentExample: 'example.md',
+  componentBase: 'example/components',
+  componentTemplates: 'markdown',
 
-  "sass": {
-    "entryPoint": "style/_index",
-    "extension": "scss"
-  },
-
-  "staticAssets": {
-    "url": "assets",
-    "location": "assets"
+  plugins: {
+    sass: {
+      entryPoint: 'style/_index',
+      dest: './_compiled/css',
+      sourceComments: true,
+      force: true
+    },
+    webpack: {
+      context: process.cwd()
+    },
+    staticAssets: {
+      url: 'assets',
+      location: 'assets'
+    }
   }
-}
+};

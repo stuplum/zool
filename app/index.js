@@ -1,8 +1,7 @@
 'use strict';
 
+const APP_NAME = 'zool';
 const version = require(`${process.cwd()}/package.json`).version;
-
-const argv = require('yargs').argv;
 
 const fs = require('fs');
 const join = require('path').join;
@@ -11,101 +10,59 @@ const resolve = require('path').resolve;
 const moment = require('moment');
 
 const ZoolSass = require('zool-sass');
-const ZoolWebpack = require('zool-webpack');
-const ZoolStaticAssets = require('zool-static-assets');
 
 const ZoolConfig = require('./lib/zool-config');
-const zoolLogger = require('zool-utils').ZoolLogger;
-const treeWalker = require('./lib/tree-walker');
+const zoolUtils = require('zool-utils');
+const onBoom = zoolUtils.onBoom;
+const zoolLogger = zoolUtils.ZoolLogger;
+const logger = zoolLogger(APP_NAME);
 
-const Hapi = require('hapi');
+const Glue = require('glue');
 const Boom = require('boom');
 const hoek = require('hoek');
-const inert = require('inert');
+
+const marked = require('marked');
 const highlight = require('highlight.js').highlight;
 
-const Vision = require('vision');
-const marked = require('marked');
-const Nunjucks = require('nunjucks');
-const handlebars = require('handlebars');
+const manifestor = require('./lib/manifestor');
+const treeWalker = require('./lib/tree-walker');
 
 const internals = {};
 
 internals.main = config => {
-
-    const logger = zoolLogger('zool');
 
     const componentHome = config.componentHome;
     const componentExample = config.componentExample;
     const componentBase = resolve(process.cwd(), config.componentBase);
     const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
 
-    const port = Number(process.env.PORT || argv.port || 8080);
-
-    const server = new Hapi.Server();
-
-    const manifest = [
-        {register: Vision},
-        {register: inert},
-        {
-            register: ZoolStaticAssets.route,
-            options: Object.assign({
-                debug: config.debug,
-                baseDir: config.componentBase,
-                aliases: { '/frame': '' }
-            }, config.staticAssets || {})
-        },
-        {
-            register: ZoolSass.route,
-            options: {
-                force: false,
-                debug: config.debug,
-                entryPoint: config.sass.entryPoint,
-                extension: config.sass.extension,
-                src: config.componentBase,
-                dest: './_compiled/css',
-                includePaths: [config.componentBase],
-                outputStyle: 'nested',
-                sourceComments: true
-            }
-        },
-        {
-            register: ZoolWebpack.route,
-            options: Object.assign(config.webpack || {}, {
-                debug: config.debug,
-                src: config.componentBase,
-                context: process.cwd()
-            })
-        }
-    ];
-
-    server.connection({ port });
-
-    server.register(manifest, err => {
+    Glue.compose(manifestor(config), {}, (err, server) => {
 
         hoek.assert(!err, err);
 
         server.views({
-            engines: {
-                html: {
-                    compile: function (src, options) {
-
-                        const template = Nunjucks.compile(src, options.environment);
-
-                        return function (context) {
-                            return template.render(context);
-                        };
-                    },
-
-                    prepare: function (options, next) {
-                        options.compileOptions.environment = Nunjucks.configure(options.path, {watch: false});
-                        return next();
-                    }
-                }
-            },
+            engines: { html: require('./lib/compilers/htmlCompiler') },
             path: join(__dirname, 'templates')
         });
 
+        server.ext('onPostHandler', onBoom((request, reply) => {
+
+            const error = request.response;
+            const errorPayload = error.output.payload;
+            const statusCode = errorPayload.statusCode;
+
+            logger[statusCode === 404 ? 'warn' : 'error'](errorPayload.error, error.message);
+
+            return reply
+
+                .view('view/error', Object.assign({}, {
+                    error: Object.assign(errorPayload, error.data)
+                }))
+
+                .code(statusCode);
+
+
+        }, APP_NAME));
 
         server.ext('onPreResponse', (request, reply) => {
 
@@ -116,27 +73,12 @@ internals.main = config => {
                 version
             };
 
-            const response = request.response;
-
-            if (response.variety === 'view') {
-                Object.assign(response.source.context, defaults);
-            }
-
-            if (request.response.isBoom) {
-
-                const error = request.response.output.payload;
-                const additionalData = request.response.data;
-
-                logger.error('Error', error);
-
-                return reply
-                    .view('view/error', Object.assign(defaults, {
-                        error: Object.assign(error, additionalData)
-                    }))
-                    .code(error.statusCode);
+            if (request.response.variety === 'view') {
+                Object.assign(request.response.source.context, defaults);
             }
 
             reply.continue();
+
         });
 
         function getMarkdown(type, request, componentHome, cb) {
@@ -147,19 +89,19 @@ internals.main = config => {
             fs.readFile(`${componentPath}/${componentHome}`, 'utf8', (err, markdown) => {
 
                 if (err) {
-                    throw Boom.notFound(`${componentName} ${type} not found`, { stacktrace: err });
+                    throw Boom.notFound(`${componentName} ${type} not found`, { stacktrace: err, from: APP_NAME });
                 }
 
                 cb(marked(markdown), componentName, componentPath);
             });
         }
 
-        function replyWithUsage(componentName, cb) {
-            getMarkdown('component', componentName, componentHome, cb);
+        function replyWithUsage(request, cb) {
+            getMarkdown('component', request, componentHome, cb);
         }
 
-        function replyWithExample(componentName, cb) {
-            getMarkdown('example', componentName, componentExample, cb);
+        function replyWithExample(request, cb) {
+            getMarkdown('example', request, componentExample, cb);
         }
 
         function fileExists(path, cb) {
@@ -195,15 +137,15 @@ internals.main = config => {
 
                             const opts = {
                                 force: true,
-                                entryPoint: config.sass.entryPoint,
-                                extension: config.sass.extension,
+                                entryPoint: config.plugins.sass.entryPoint,
+                                extension: config.plugins.sass.extension,
                                 src: config.componentBase,
                                 dest: './_compiled/css',
                                 includePaths: [config.componentBase],
                                 outputStyle: 'expanded'
                             };
 
-                            ZoolSass.compiler.compile(componentName, opts)
+                            ZoolSass.compile(componentName, opts)
 
                                 .then(css => {
                                     return `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
@@ -225,16 +167,16 @@ internals.main = config => {
                 method: 'GET', path: '/frame/{location*}',
                 handler: (request, reply) => {
                     replyWithExample(request, (example, componentName) => {
-                        reply.view('view/component-frame', { example, componentName });
+                        reply.view('view/component-frame', {example, componentName});
                     });
                 }
             }
         ]);
 
-    });
+        server.start(() => {
+            logger.log('App started', server.info.uri);
+        });
 
-    server.start(() => {
-        logger.log('App started', server.info.uri);
     });
 
 };
