@@ -1,3 +1,3 @@
 #! /usr/bin/env node
 
-require('./app/index');
+require('./app/index')();

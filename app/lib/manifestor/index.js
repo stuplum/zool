@@ -3,8 +3,6 @@
 const decamelize = require('decamelize');
 const omit = require('lodash').omit;
 
-const argv = require('yargs').argv;
-
 function pluginFromConfig(name, config, options) {
     return {
         plugin: {
@@ -24,11 +22,7 @@ class Manifestor {
         config = Object.assign({ plugins: {} }, config);
 
         this.manifest = {
-            connections: [
-                {
-                    port: Number(process.env.PORT || argv.port || config.port || 8080)
-                }
-            ],
+            connections: [ { port: config.PORT } ],
             registrations: [{
                 plugin: { register: 'vision' }
             }, {

@@ -1,44 +1,22 @@
 'use strict';
 
-const APP_NAME = 'zool';
-const version = require(`${process.cwd()}/package.json`).version;
-
-const fs = require('fs');
 const join = require('path').join;
-const extname = require('path').extname;
-const resolve = require('path').resolve;
 const moment = require('moment');
-
-const ZoolSass = require('zool-sass');
 
 const ZoolConfig = require('./lib/zool-config');
 const zoolUtils = require('zool-utils');
 const onBoom = zoolUtils.onBoom;
 const zoolLogger = zoolUtils.ZoolLogger;
-const logger = zoolLogger(APP_NAME);
 
-const Glue = require('glue');
-const Boom = require('boom');
-const hoek = require('hoek');
-
-const marked = require('marked');
-const highlight = require('highlight.js').highlight;
-
-const manifestor = require('./lib/manifestor');
-const treeWalker = require('./lib/tree-walker');
+const appComposer = require('./lib/appComposer');
 
 const internals = {};
 
 internals.main = config => {
 
-    const componentHome = config.componentHome;
-    const componentExample = config.componentExample;
-    const componentBase = resolve(process.cwd(), config.componentBase);
-    const componentTree = treeWalker(componentBase, [extname(componentHome)]).walk();
+    const logger = zoolLogger(config.APP_NAME);
 
-    Glue.compose(manifestor(config), {}, (err, server) => {
-
-        hoek.assert(!err, err);
+    appComposer(config, (server, context) => {
 
         server.views({
             engines: { html: require('./lib/compilers/htmlCompiler') },
@@ -62,15 +40,15 @@ internals.main = config => {
                 .code(statusCode);
 
 
-        }, APP_NAME));
+        }, config.APP_NAME));
 
         server.ext('onPreResponse', (request, reply) => {
 
             const defaults = {
-                brand: config.brand || 'ZOOL',
-                componentTree: componentTree.children,
+                brand: config.brand || config.APP_NAME,
+                componentTree: context.componentTree.children,
                 year: moment().year(),
-                version
+                version: config.version
             };
 
             if (request.response.variety === 'view') {
@@ -81,98 +59,6 @@ internals.main = config => {
 
         });
 
-        function getMarkdown(type, request, componentHome, cb) {
-
-            const componentName = request.params.location;
-            const componentPath = `${componentBase}/${componentName}`;
-
-            fs.readFile(`${componentPath}/${componentHome}`, 'utf8', (err, markdown) => {
-
-                if (err) {
-                    throw Boom.notFound(`${componentName} ${type} not found`, { stacktrace: err, from: APP_NAME });
-                }
-
-                cb(marked(markdown), componentName, componentPath);
-            });
-        }
-
-        function replyWithUsage(request, cb) {
-            getMarkdown('component', request, componentHome, cb);
-        }
-
-        function replyWithExample(request, cb) {
-            getMarkdown('example', request, componentExample, cb);
-        }
-
-        function fileExists(path, cb) {
-            fs.stat(path, err => cb(!err));
-        }
-
-        server.route([
-            {
-                method: 'GET', path: '/favicon.ico',
-                handler: {
-                    file: join(__dirname, 'public', 'favicon.ico')
-                }
-            },
-            {
-                method: 'GET', path: '/_sw.js',
-                handler: {
-                    file: join(__dirname, 'public', 'js', 'sw.js')
-                }
-            }, {
-                method: 'GET', path: '/_assets/{param*}',
-                handler: {
-                    directory: {
-                        path: join(__dirname, 'public'),
-                        listing: true
-                    }
-                }
-            }, {
-
-                method: 'GET', path: '/{location*}',
-                handler: (request, reply) => {
-                    replyWithUsage(request, (usage, componentName, location) => {
-                        fileExists(`${location}/${componentExample}`, hasExample => {
-
-                            const opts = {
-                                force: true,
-                                entryPoint: config.plugins.sass.entryPoint,
-                                extension: config.plugins.sass.extension,
-                                src: config.componentBase,
-                                dest: './_compiled/css',
-                                includePaths: [config.componentBase],
-                                outputStyle: 'expanded'
-                            };
-
-                            ZoolSass.compile(componentName, opts)
-
-                                .then(css => {
-                                    return `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
-                                })
-
-                                .then(highlightedCss => {
-                                    reply.view('view/component', { usage, componentName, location, hasExample, highlightedCss });
-                                })
-
-                                .catch(() => {
-                                    reply.view('view/component', { usage, componentName, location, hasExample });
-                                });
-
-                        });
-                    });
-                }
-            }, {
-
-                method: 'GET', path: '/frame/{location*}',
-                handler: (request, reply) => {
-                    replyWithExample(request, (example, componentName) => {
-                        reply.view('view/component-frame', {example, componentName});
-                    });
-                }
-            }
-        ]);
-
         server.start(() => {
             logger.log('App started', server.info.uri);
         });
@@ -181,4 +67,15 @@ internals.main = config => {
 
 };
 
-internals.main(new ZoolConfig().create(process.cwd(), __dirname));
+function getConfig(APP_NAME, PORT) {
+    return Object.assign({
+        version: require(`${process.cwd()}/package.json`).version,
+        PORT,
+        APP_NAME
+    }, new ZoolConfig().create(process.cwd(), __dirname));
+}
+
+module.exports = function (PORT) {
+    internals.main(getConfig('zool', PORT || 8080));
+};
+
