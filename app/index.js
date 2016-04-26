@@ -76,6 +76,6 @@ function getConfig(APP_NAME, PORT) {
 }
 
 module.exports = function (PORT) {
-    internals.main(getConfig('zool', PORT || 8080));
+    internals.main(getConfig('zool', PORT));
 };
 

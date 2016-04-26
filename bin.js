@@ -1,3 +1,5 @@
 #! /usr/bin/env node
 
-require('./app/index')();
+const getPort = require('./app/lib/portChooser').getPort;
+
+require('./app/index')(getPort());

@@ -24,7 +24,7 @@ describe('manifestor', () => {
 
         it('should use port from config', syncSpec(() => {
 
-            let manifest = manifestor({ port: 1234 });
+            let manifest = manifestor({ PORT: 1234 });
 
             expect(manifest.connections[0].port).to.equal(1234);
 

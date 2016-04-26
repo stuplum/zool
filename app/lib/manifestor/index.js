@@ -22,7 +22,7 @@ class Manifestor {
         config = Object.assign({ plugins: {} }, config);
 
         this.manifest = {
-            connections: [ { port: config.PORT } ],
+            connections: [ { port: config.PORT || 8080 } ],
             registrations: [{
                 plugin: { register: 'vision' }
             }, {

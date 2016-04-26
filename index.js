@@ -1,9 +1,6 @@
 'use strict';
 
-const argv = require('yargs').argv;
-
+const getPort = require('./app/lib/portChooser').getPort;
 const appServer = require('./app');
 
-const PORT = Number(process.env.PORT || argv.port);
-
-appServer(PORT);
+appServer(getPort());
