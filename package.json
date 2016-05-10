@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
