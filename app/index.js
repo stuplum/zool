@@ -8,7 +8,7 @@ const zoolUtils = require('zool-utils');
 const onBoom = zoolUtils.onBoom;
 const zoolLogger = zoolUtils.ZoolLogger;
 
-const appComposer = require('./lib/appComposer');
+const appComposer = require('./lib/app-composer');
 
 const internals = {};
 

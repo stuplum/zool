@@ -54,7 +54,7 @@ module.exports = config => {
         {
             method: 'GET', path: '/_sw.js',
             handler: {
-                file: join(__dirname, '..', 'public', 'js', 'sw.js')
+                file: join(__dirname, '..', 'public', 'js', 'sw.bundle.js')
             }
         }, {
             method: 'GET', path: '/_assets/{param*}',

@@ -2,7 +2,7 @@
 
 let treeWalker = require(fromRoot('app/lib/tree-walker'));
 
-describe('manifestor', () => {
+describe('tree-walker', () => {
 
     let treeFromRoot, treeFromChild;
 

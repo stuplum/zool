@@ -1,8 +1,6 @@
 <script>
 
-    ZOOL.debug = true;
-
-    ZOOL.resource = {
+    ZOOL.proxy.add({
         url: 'http://example.com/dave/search',
         response: {
             status: 200,
@@ -23,7 +21,7 @@
                 }
             ]
         }
-    };
+    }, true);
 
 </script>
 

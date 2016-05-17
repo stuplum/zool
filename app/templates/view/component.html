@@ -35,16 +35,6 @@
 <script src="/js/{{ componentName }}.js"></script>
 {% endif %}
 
-<script src="/_assets/js/main.js"></script>
-{% if hasExample %}
-<script>
+<script src="/_assets/js/main.bundle.js"></script>
 
-    const iframe = document.querySelector('#example');
-
-    iframe.onload = function () {
-        iframeResizer(document.querySelector('#example'), 1000);
-    };
-
-</script>
-{% endif %}
 {% endblock %}

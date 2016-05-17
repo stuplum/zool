@@ -6,3 +6,6 @@ node_modules
 
 *.iml
 *.log
+
+*.lib.js
+*.bundle.js

@@ -29,18 +29,11 @@
         }
     </style>
     <link rel="stylesheet" href="/css/{{ componentName }}.css" />
-    <script>
-        var ZOOL = ZOOL || {};
-    </script>
+    <script src="/_assets/js/zool.lib.js"></script>
+
 </head>
 <body class="checkerboard">
     {{ example | safe }}
     <script src="/js/{{ componentName }}.js"></script>
-    <script src="/_assets/js/frame.js"></script>
-    <script>
-        if (ZOOL.resource) {
-            ZOOL.proxy.add(ZOOL.resource, ZOOL.debug);
-        }
-    </script>
 </body>
 </html>
