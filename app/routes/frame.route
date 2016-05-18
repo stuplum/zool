@@ -13,7 +13,7 @@ module.exports = function (config) {
         const componentName = request.params.location;
         const componentPath = `${componentBase}/${componentName}`;
 
-        const markdownParser = new MarkdownParser(fileName);
+        const markdownParser = new MarkdownParser(config.APP_NAME, fileName);
         markdownParser.parse(componentName, componentPath, cb);
 
     }
