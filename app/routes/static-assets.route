@@ -1,0 +1,15 @@
+'use strict';
+
+const join = require('path').join;
+
+module.exports = function () {
+    return {
+        method: 'GET', path: '/_assets/{param*}',
+        handler: {
+            directory: {
+                path: join(__dirname, '..', 'public'),
+                listing: true
+            }
+        }
+    };
+};

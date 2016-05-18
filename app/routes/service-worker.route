@@ -1,0 +1,12 @@
+'use strict';
+
+const join = require('path').join;
+
+module.exports = function () {
+    return {
+        method: 'GET', path: '/_sw.js',
+        handler: {
+            file: join(__dirname, '..', 'public', 'js', 'sw.bundle.js')
+        }
+    };
+};

@@ -1,0 +1,30 @@
+'use strict';
+
+const resolve = require('path').resolve;
+const MarkdownParser = require('../lib/markdown-parser');
+
+module.exports = function (config) {
+
+    const componentBase = resolve(process.cwd(), config.componentBase);
+
+    function replyWithExample(request, cb) {
+
+        const fileName = config.componentExample;
+        const componentName = request.params.location;
+        const componentPath = `${componentBase}/${componentName}`;
+
+        const markdownParser = new MarkdownParser(fileName);
+        markdownParser.parse(componentName, componentPath, cb);
+
+    }
+
+    return {
+
+        method: 'GET', path: '/frame/{location*}',
+        handler: (request, reply) => {
+            replyWithExample(request, (example, componentName) => {
+                reply.view('view/component-frame', { example, componentName });
+            });
+        }
+    };
+};

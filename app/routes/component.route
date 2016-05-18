@@ -1,0 +1,70 @@
+'use strict';
+
+const fs = require('fs');
+const resolve = require('path').resolve;
+
+const ZoolSass = require('zool-sass');
+const highlight = require('highlight.js').highlight;
+const MarkdownParser = require('../lib/markdown-parser');
+
+module.exports = function (config) {
+
+    const componentBase = resolve(process.cwd(), config.componentBase);
+
+    function replyWithUsage(request, cb) {
+
+        const fileName = config.componentHome;
+        const componentName = request.params.location;
+        const componentPath = `${componentBase}/${componentName}`;
+
+        const markdownParser = new MarkdownParser(fileName);
+        markdownParser.parse(componentName, componentPath, cb);
+
+    }
+
+    function fileExists(path, cb) {
+        fs.stat(path, err => cb(!err));
+    }
+
+    return {
+
+        method: 'GET', path: '/{location*}',
+        handler: (request, reply) => {
+            replyWithUsage(request, (usage, componentName, location) => {
+                fileExists(`${location}/${config.componentExample}`, hasExample => {
+
+                    const opts = {
+                        force: true,
+                        entryPoint: config.plugins.sass.entryPoint,
+                        extension: config.plugins.sass.extension,
+                        src: config.componentBase,
+                        dest: './_compiled/css',
+                        includePaths: [config.componentBase],
+                        outputStyle: 'expanded'
+                    };
+
+                    ZoolSass.compile(componentName, opts)
+
+                        .then(css => {
+                            return `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
+                        })
+
+                        .then(highlightedCss => {
+                            reply.view('view/component', {
+                                usage,
+                                componentName,
+                                location,
+                                hasExample,
+                                highlightedCss
+                            });
+                        })
+
+                        .catch(() => {
+                            reply.view('view/component', {usage, componentName, location, hasExample});
+                        });
+
+                });
+            });
+        }
+    };
+};
