@@ -4,7 +4,7 @@
 <script id="initialData" type="application/json">
     {{ initialData | safe }}
 </script>
-{% if not hasExample %}
+{% if not hasExample and not hasExamples %}
 <link rel="stylesheet" href="/css/{{ componentName }}.css" />
 {% endif %}
 {% endblock %}
@@ -38,7 +38,8 @@
     </div>
     {% endif %}
 </div>
-{% if not hasExample %}
+
+{% if not hasExample and not hasExamples %}
 <script src="/js/{{ componentName }}.js"></script>
 {% endif %}
 
