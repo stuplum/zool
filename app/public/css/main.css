@@ -341,21 +341,10 @@ a.zool-button--selected {
     height: 20px;
     width: 20px;
     border: 1px solid #e6e6e6;
-    border-radius: 3px 3px 0 0;
-    bottom: -1px;
+    border-bottom-left-radius: 4px;
+    bottom: -20px;
     justify-content: center;
     align-items: center;
-    background-color: #f5f5f5;
-}
-
-.zool-component-frame__new-tab:after {
-    position: absolute;
-    display: block;
-    height: 1px;
-    width: 18px;
-    left: 0;
-    bottom: -1px;
-    content: '';
     background-color: #f5f5f5;
 }
 

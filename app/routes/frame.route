@@ -5,13 +5,12 @@ const MarkdownParser = require('../lib/markdown-parser');
 
 module.exports = function (config) {
 
-    const componentBase = resolve(process.cwd(), config.componentBase);
+    const componentsDir = resolve(process.cwd(), config.componentsDir);
 
-    function replyWithExample(request, cb) {
+    function replyWithExample(fileName, request, cb) {
 
-        const fileName = config.componentExample;
         const componentName = request.params.location;
-        const componentPath = `${componentBase}/${componentName}`;
+        const componentPath = `${componentsDir}/${componentName}`;
 
         const markdownParser = new MarkdownParser(config.APP_NAME, fileName);
         markdownParser.parse(componentName, componentPath, cb);
@@ -22,7 +21,8 @@ module.exports = function (config) {
 
         method: 'GET', path: '/frame/{location*}',
         handler: (request, reply) => {
-            replyWithExample(request, (example, componentName) => {
+            const fileName = request.query.exampleId ? `example.${request.query.exampleId}.md` : 'example.md';
+            replyWithExample(fileName, request, (example, componentName) => {
                 reply.view('view/component-frame', { example, componentName });
             });
         }

@@ -55,7 +55,7 @@ describe('manifestor', () => {
 
         it('should include static assets with aliases set correctly', syncSpec(() => {
 
-            let manifest = manifestor({ componentBase: 'some-base' });
+            let manifest = manifestor({ componentsDir: 'some-base' });
 
             expect(manifest.registrations[2]).to.deep.equal({
                 plugin: {
@@ -72,7 +72,7 @@ describe('manifestor', () => {
 
         it('should include other plugins from config', syncSpec(() => {
 
-            let manifest = manifestor({ componentBase: 'some-base', plugins: {
+            let manifest = manifestor({ componentsDir: 'some-base', plugins: {
                 somePlugin: { someOption: 'some-option' }
             } });
 

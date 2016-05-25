@@ -9,7 +9,7 @@ function pluginFromConfig(name, config, options) {
             register: `zool-${decamelize(name, '-')}`,
             options: Object.assign({
                 debug: config.debug || false,
-                src: config.componentBase
+                src: config.componentsDir
             }, options || {})
         }
     }
@@ -32,7 +32,7 @@ class Manifestor {
                     register: 'zool-static-assets',
                     options: Object.assign({
                         debug: config.debug || false,
-                        baseDir: config.componentBase,
+                        baseDir: config.componentsDir,
                         aliases: {'/frame': ''}
                     }, config.plugins.staticAssets || {})
                 }

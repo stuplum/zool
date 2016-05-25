@@ -1,15 +1,22 @@
 'use strict';
 
-// Iframe component
-import iframeResizer from './iframe-resizer';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const iframe = document.querySelector('#example');
+import Example from './components/example-tabs/example';
+import ExampleTabs from './components/example-tabs';
 
-if (iframe) {
-    iframe.onload = function () {
-        iframeResizer(document.querySelector('#example'), 1000);
-    };
+const initialData = JSON.parse(document.getElementById('initialData').innerHTML);
+const example = document.getElementById('example');
+const exampleTabs = document.getElementById('exampleTabs');
+
+if (example) {
+    ReactDOM.render(<Example {...initialData.example}/>, example);
 }
+if (exampleTabs) {
+    ReactDOM.render(<ExampleTabs {...initialData.example}/>, exampleTabs);
+}
+
 
 import SwIndicator from './service-worker-indicator';
 

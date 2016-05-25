@@ -1,6 +1,9 @@
 {% extends 'layout/app.html' %}
 
 {% block head %}
+<script id="initialData" type="application/json">
+    {{ initialData | safe }}
+</script>
 {% if not hasExample %}
 <link rel="stylesheet" href="/css/{{ componentName }}.css" />
 {% endif %}
@@ -12,13 +15,17 @@
     <h2>{{ location }}</h2>
 </div>
 <div class="zool-content">
+
     {% if hasExample %}
-    <div class="zool-content__section zool-component-frame">
-        <a class="zool-component-frame__new-tab" href="/frame/{{ componentName }}" target="_blank" title="Open {{ componentName }} in a new tab">
-            <img src="/_assets/img/new-tab.gif" alt="Open example in new tab"/>
-        </a>
-        <iframe id="example" src="/frame/{{ componentName }}" scrolling="no"></iframe>
-    </div>
+        <div class="zool-content__section">
+            <div id="example" zool-component="example"></div>
+        </div>
+    {% endif %}
+
+    {% if hasExamples %}
+        <div class="zool-content__section">
+            <div id="exampleTabs" data-component="example-tabs"></div>
+        </div>
     {% endif %}
 
     <div class="zool-content__section zool-usage">

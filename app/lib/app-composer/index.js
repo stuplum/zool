@@ -10,9 +10,9 @@ const treeWalker = require('../tree-walker');
 
 module.exports = (config, cb) => {
 
-    const componentHome = config.componentHome;
-    const componentBase = Path.resolve(process.cwd(), config.componentBase);
-    const componentTree = treeWalker(componentBase, [Path.extname(componentHome)]).walk();
+    const fileName = 'README.md';
+    const componentsDir = Path.resolve(process.cwd(), config.componentsDir);
+    const componentTree = treeWalker(componentsDir, [Path.extname(fileName)]).walk();
 
     Glue.compose(manifestor(config), {}, (err, server) => {
 

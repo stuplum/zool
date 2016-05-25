@@ -10,7 +10,7 @@ function merge(config) {
     return Object.assign({}, {
         module: {
             loaders:[
-                { test: /\.js$/, loader:'babel-loader', exclude: /node_modules/, query: { presets: ['es2015'] } }
+                { test: /\.js$/, loader:'babel-loader', exclude: /node_modules/, query: { presets: ['es2015', 'react'] } }
             ]
         },
         plugins: [

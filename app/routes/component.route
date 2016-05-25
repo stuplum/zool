@@ -1,29 +1,36 @@
 'use strict';
 
-const fs = require('fs');
+const glob = require('glob');
 const resolve = require('path').resolve;
 
 const ZoolSass = require('zool-sass');
 const highlight = require('highlight.js').highlight;
 const MarkdownParser = require('../lib/markdown-parser');
 
+const EXAMPLE_GLOB = 'example*.md';
+const EXAMPLE_REGEX = 'example.([a-z]+).md';
+
 module.exports = function (config) {
 
-    const componentBase = resolve(process.cwd(), config.componentBase);
+    const componentsDir = resolve(process.cwd(), config.componentsDir);
 
     function replyWithUsage(request, cb) {
 
-        const fileName = config.componentHome;
+        const fileName = 'README.md';
         const componentName = request.params.location;
-        const componentPath = `${componentBase}/${componentName}`;
+        const componentPath = `${componentsDir}/${componentName}`;
 
         const markdownParser = new MarkdownParser(config.APP_NAME, fileName);
         markdownParser.parse(componentName, componentPath, cb);
 
     }
 
-    function fileExists(path, cb) {
-        fs.stat(path, err => cb(!err));
+    function extractExampleId(example) {
+
+        const re = new RegExp(EXAMPLE_REGEX, 'gi');
+        const res = re.exec(example);
+
+        return res ? res[1] : undefined;
     }
 
     return {
@@ -31,15 +38,28 @@ module.exports = function (config) {
         method: 'GET', path: '/{location*}',
         handler: (request, reply) => {
             replyWithUsage(request, (usage, componentName, location) => {
-                fileExists(`${location}/${config.componentExample}`, hasExample => {
+
+                glob(EXAMPLE_GLOB, {cwd: location}, (err, examples) => {
+
+                    const hasExample = examples.length === 1;
+                    const hasExamples = examples.length > 1;
+
+                    examples = examples.map(extractExampleId);
+
+                    const initialData = JSON.stringify({
+                        example: {
+                            componentName,
+                            examples
+                        }
+                    });
 
                     const opts = {
                         force: true,
                         entryPoint: config.plugins.sass.entryPoint,
                         extension: config.plugins.sass.extension,
-                        src: config.componentBase,
+                        src: config.componentsDir,
                         dest: './_compiled/css',
-                        includePaths: [config.componentBase],
+                        includePaths: [config.componentsDir],
                         outputStyle: 'expanded'
                     };
 
@@ -55,12 +75,23 @@ module.exports = function (config) {
                                 componentName,
                                 location,
                                 hasExample,
+                                hasExamples,
+                                examples,
+                                initialData,
                                 highlightedCss
                             });
                         })
 
                         .catch(() => {
-                            reply.view('view/component', {usage, componentName, location, hasExample});
+                            reply.view('view/component', {
+                                usage,
+                                componentName,
+                                location,
+                                hasExample,
+                                hasExamples,
+                                examples,
+                                initialData
+                            });
                         });
 
                 });

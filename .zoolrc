@@ -2,11 +2,7 @@
 
 module.exports = {
   debug: false,
-
-  componentHome: 'README.md',
-  componentExample: 'example.md',
-  componentBase: 'example/components',
-  componentTemplates: 'markdown',
+  componentsDir: 'example/components',
 
   plugins: {
     sass: {

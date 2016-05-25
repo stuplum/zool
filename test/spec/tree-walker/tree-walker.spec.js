@@ -40,7 +40,7 @@ describe('tree-walker', () => {
     //}));
 
     it('should have a list of children', syncSpec(() => {
-        expect(treeFromRoot.children).to.have.length(5);
+        expect(treeFromRoot.children).to.have.length(6);
     }));
 
     describe('child', () => {
@@ -48,7 +48,7 @@ describe('tree-walker', () => {
         let childItem;
 
         beforeEach(syncSpec(() => {
-            childItem = treeFromRoot.children[1];
+            childItem = treeFromRoot.children[2];
         }));
 
         it('should have a parent', syncSpec(() => {
@@ -77,7 +77,7 @@ describe('tree-walker', () => {
         let childItem;
 
         beforeEach(syncSpec(() => {
-            childItem = treeFromRoot.children[1].children[0];
+            childItem = treeFromRoot.children[2].children[0];
         }));
 
         it('should have a parent', syncSpec(() => {
