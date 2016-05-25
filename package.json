@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -12,7 +12,8 @@
     "dev": "NODE_ENV=development npm start",
     "test": "karma start test/karma.conf.js --singleRun=true && npm run test-server",
     "test-client": "karma start test/karma.conf.js",
-    "test-server": "lab -I 'describe,it,before,beforeEach,after,afterEach,expect,syncSpec,fromRoot,__core-js_shared__' -T test/support/transforms.js test/unit.lab.js"
+    "test-server": "lab -I 'describe,it,before,beforeEach,after,afterEach,expect,syncSpec,fromRoot,__core-js_shared__' -T test/support/transforms.js test/unit.lab.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
     "react": "15.0.2",
     "react-dom": "15.1.0",
     "react-tabs": "0.5.3",
+    "title-case": "1.1.2",
     "vision": "^4.0.1",
     "walk": "2.3.9",
     "yargs": "3.32.0",

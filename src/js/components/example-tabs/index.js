@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import titleCase from 'title-case';
 
 import {Tabs, TabList, Tab, TabPanel} from 'react-tabs';
 import Example from './example';
@@ -15,7 +16,7 @@ export default React.createClass({
         return (
             <Tabs onSelect={this.handleSelect} selectedIndex={0}>
                 <TabList>
-                    { this.props.examples.map(example => <Tab key={example}>{example}</Tab>) }
+                    { this.props.examples.map(example => <Tab key={example}>{titleCase(example)}</Tab>) }
                 </TabList>
                 { this.props.examples.map(example =>
                     <TabPanel key={example}>

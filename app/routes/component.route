@@ -8,7 +8,7 @@ const highlight = require('highlight.js').highlight;
 const MarkdownParser = require('../lib/markdown-parser');
 
 const EXAMPLE_GLOB = 'example*.md';
-const EXAMPLE_REGEX = 'example.([a-z]+).md';
+const EXAMPLE_REGEX = 'example.([a-z_-]+).md';
 
 module.exports = function (config) {
 
