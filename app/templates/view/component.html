@@ -32,11 +32,14 @@
         {{ usage | safe }}
     </div>
 
-    {% if highlightedCss %}
     <div class="zool-content__section zool-highlighted">
-        {{ highlightedCss | safe }}
+        <div id="highlightCss"></div>
     </div>
-    {% endif %}
+
+    <div class="zool-content__section zool-highlighted">
+        <div id="highlightJs"></div>
+    </div>
+
 </div>
 
 {% if not hasExample and not hasExamples %}

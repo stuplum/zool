@@ -8,8 +8,9 @@ module.exports = {
     sass: {
       entryPoint: 'style/_index',
       dest: './_compiled/css',
-      sourceComments: true,
-      force: true
+      sourceComments: false,
+      force: true,
+      outputStyle: 'expanded'
     },
     webpack: {
       context: process.cwd()

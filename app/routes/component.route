@@ -3,8 +3,6 @@
 const glob = require('glob');
 const resolve = require('path').resolve;
 
-const ZoolSass = require('zool-sass');
-const highlight = require('highlight.js').highlight;
 const MarkdownParser = require('../lib/markdown-parser');
 
 const EXAMPLE_GLOB = 'example*.md';
@@ -53,46 +51,15 @@ module.exports = function (config) {
                         }
                     });
 
-                    const opts = {
-                        force: true,
-                        entryPoint: config.plugins.sass.entryPoint,
-                        extension: config.plugins.sass.extension,
-                        src: config.componentsDir,
-                        dest: './_compiled/css',
-                        includePaths: [config.componentsDir],
-                        outputStyle: 'expanded'
-                    };
-
-                    ZoolSass.compile(componentName, opts)
-
-                        .then(css => {
-                            return `<pre class="hljs"><code class="css">${highlight('css', css).value}</code></pre>`;
-                        })
-
-                        .then(highlightedCss => {
-                            reply.view('view/component', {
-                                usage,
-                                componentName,
-                                location,
-                                hasExample,
-                                hasExamples,
-                                examples,
-                                initialData,
-                                highlightedCss
-                            });
-                        })
-
-                        .catch(() => {
-                            reply.view('view/component', {
-                                usage,
-                                componentName,
-                                location,
-                                hasExample,
-                                hasExamples,
-                                examples,
-                                initialData
-                            });
-                        });
+                    reply.view('view/component', {
+                        usage,
+                        componentName,
+                        location,
+                        hasExample,
+                        hasExamples,
+                        examples,
+                        initialData
+                    });
 
                 });
             });

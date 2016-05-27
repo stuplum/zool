@@ -1,6 +1,6 @@
 {
   "name": "zool",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Living Styleguide Generator",
   "main": "app/index.js",
   "bin": {
@@ -50,6 +50,7 @@
     "react": "15.0.2",
     "react-dom": "15.1.0",
     "react-tabs": "0.5.3",
+    "superagent": "2.0.0-alpha.3",
     "title-case": "1.1.2",
     "vision": "^4.0.1",
     "walk": "2.3.9",
